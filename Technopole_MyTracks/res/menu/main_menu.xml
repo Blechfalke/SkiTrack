@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/newTrack"
+        android:title="@string/newTrack"
+        android:icon="@android:drawable/ic_input_add"
+        android:showAsAction="always|withText"
+    />
+    <item
+            android:id="@+id/downloadMap"
+            android:title="@string/downloadMap"
+            android:icon="@drawable/ic_btn_round_more_normal"
+            android:showAsAction="always|withText"
+            />
+</menu>

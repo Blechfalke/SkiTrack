@@ -1,0 +1,2 @@
+INDEX VERSION 1.127+/Users/Blechfalke/Documents/Workspaces/Android/SkiTrack/.metadata/.plugins/org.eclipse.jdt.core
+4028947191.index

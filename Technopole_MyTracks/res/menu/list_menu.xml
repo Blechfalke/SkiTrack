@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+     <item
+        android:id="@+id/export_file"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/exportToFile">
+        <menu>
+            <item
+                android:id="@+id/export_kml"
+                android:showAsAction="always"
+                android:title="@string/exportKML"/>
+            <item
+                android:id="@+id/export_csv"
+                android:showAsAction="always"
+                android:title="@string/exportCSV"/>
+        </menu>
+    </item>
+    <item android:id="@+id/remove_track"
+        android:showAsAction="always"
+        android:title="@string/remove"/>
+</menu>

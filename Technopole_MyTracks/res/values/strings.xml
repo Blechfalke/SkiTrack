@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TechnoTracks</string>
+    <string name="uploadDialogTitle">Upload data</string>
+    <string name="uploadDialogMessage">You can upload data now or later</string>
+    <string name="positiveButton">Now</string>
+    <string name="negativeButton">Later</string>
+    <string name="exportToFile">Export to File</string>
+    <string name="title_activity_capturing">Tracking</string>
+    <string name="capturing">Capturing</string>
+    <string name="notCapturing">No capture</string>
+    <string name="exportKML">KML</string>
+    <string name="exportCSV">CSV</string>
+    <string name="remove">Remove</string>
+    <string name="activateNetwork">Activate network</string>
+    <string name="downloadingMap">Downloading map&#8230;</string>
+    <string name="pleaseWait">Please Wait</string>
+    <string name="fileDownloadTitle">switzerland.map</string>
+    <string name="fileDownloadDescription">Downloading map please wait</string>
+    <string name="googleEarthMissing">Google Earth is missing</string>
+    <string name="googleEarthNecessary">Google earth is necessary for displaying kml file correctly</string>
+    <string name="missingMap">Missing map</string>
+    <string name="missingMapMessage">This application need a map.\nActivate network and restart to download</string>
+	<string name="newTrackName">New track name</string>
+    <string name="noGps">No GPS Enabled</string>
+    <string name="enableGps">Do you want to enable GPS ?</string>
+    <string name="currentLocation">Current Location</string>
+    <string name="youAreHere">You are here !</string>
+    <string name="newTrack">New Track</string>
+    <string name="downloadMap">Download map</string>
+    <string name="reDownloadMap">If map does not display properly you can redownload it now.
+    </string>
+
+</resources>
