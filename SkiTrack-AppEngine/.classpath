@@ -5,14 +5,6 @@
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gcm-server.jar"/>
-	<classpathentry kind="lib" path="D:/Workspaces/Android/SkiTrack/v2/asm-3.3.1.jar"/>
-	<classpathentry kind="lib" path="D:/Workspaces/Android/SkiTrack/v2/datanucleus-api-jdo-3.0.5.jar"/>
-	<classpathentry kind="lib" path="D:/Workspaces/Android/SkiTrack/v2/datanucleus-api-jpa-3.0.6.jar"/>
-	<classpathentry kind="lib" path="D:/Workspaces/Android/SkiTrack/v2/datanucleus-core-3.0.6.jar"/>
-	<classpathentry kind="lib" path="D:/Workspaces/Android/SkiTrack/v2/datanucleus-enhancer-3.0.1.jar"/>
-	<classpathentry kind="lib" path="D:/Workspaces/Android/SkiTrack/v2/geronimo-jpa_2.0_spec-1.0.jar"/>
-	<classpathentry kind="lib" path="D:/Workspaces/Android/SkiTrack/v2/jdo-api-3.0.jar"/>
-	<classpathentry kind="lib" path="D:/Workspaces/Android/SkiTrack/v2/transaction-api-1.1.jar"/>
 	<classpathentry kind="lib" path="Libs/datanucleus-api-jdo-3.0.5.jar"/>
 	<classpathentry kind="lib" path="Libs/datanucleus-api-jpa-3.0.6.jar"/>
 	<classpathentry kind="lib" path="Libs/datanucleus-appengine-2.0.0-final.jar"/>

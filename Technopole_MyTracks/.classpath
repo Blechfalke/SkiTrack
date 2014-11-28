@@ -5,5 +5,10 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="src" path="SkiTrack/endpoint-libs/libchampionshipendpoint-v1/championshipendpoint/championshipendpoint-v1-generated-source"/>
+	<classpathentry kind="src" path="SkiTrack/endpoint-libs/libdeviceinfoendpoint-v1/deviceinfoendpoint/deviceinfoendpoint-v1-generated-source"/>
+	<classpathentry kind="src" path="SkiTrack/endpoint-libs/libgpsdataendpoint-v1/gpsdataendpoint/gpsdataendpoint-v1-generated-source"/>
+	<classpathentry kind="src" path="SkiTrack/endpoint-libs/libtrackendpoint-v1/trackendpoint/trackendpoint-v1-generated-source"/>
+	<classpathentry kind="src" path="SkiTrack/endpoint-libs/libuserendpoint-v1/userendpoint/userendpoint-v1-generated-source"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

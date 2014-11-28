@@ -5,7 +5,7 @@
   <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
   <init-param>
    <param-name>services</param-name>
-   <param-value>ch.technotracks.DeviceInfoEndpoint</param-value>
+   <param-value>ch.technotracks.ChampionshipEndpoint,ch.technotracks.DeviceInfoEndpoint,ch.technotracks.GPSDataEndpoint,ch.technotracks.TrackEndpoint,ch.technotracks.UserEndpoint</param-value>
   </init-param>
  </servlet>
  <servlet-mapping>
