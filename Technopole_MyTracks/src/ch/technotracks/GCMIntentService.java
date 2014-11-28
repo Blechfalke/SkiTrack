@@ -14,8 +14,8 @@ import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.json.jackson2.JacksonFactory;
 
-import deviceinfoendpoint.Deviceinfoendpoint;
-import deviceinfoendpoint.DeviceInfo;
+import ch.technotracks.deviceinfoendpoint.Deviceinfoendpoint;
+import ch.technotracks.deviceinfoendpoint.model.DeviceInfo;
 
 /**
  * This class is started up as a service of the Android application. It listens
@@ -251,14 +251,14 @@ public class GCMIntentService extends GCMBaseIntentService {
    */
   private void sendNotificationIntent(Context context, String message,
       boolean isError, boolean isRegistrationMessage) {
-    Intent notificationIntent = new Intent(context, RegisterActivity.class);
-    notificationIntent.putExtra("gcmIntentServiceMessage", true);
-    notificationIntent.putExtra("registrationMessage",
-        isRegistrationMessage);
-    notificationIntent.putExtra("error", isError);
-    notificationIntent.putExtra("message", message);
-    notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    startActivity(notificationIntent);
+//    Intent notificationIntent = new Intent(context, RegisterActivity.class);
+//    notificationIntent.putExtra("gcmIntentServiceMessage", true);
+//    notificationIntent.putExtra("registrationMessage",
+//        isRegistrationMessage);
+//    notificationIntent.putExtra("error", isError);
+//    notificationIntent.putExtra("message", message);
+//    notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//    startActivity(notificationIntent);
   }
 
   private String getWebSampleUrl(String endpointUrl) {
