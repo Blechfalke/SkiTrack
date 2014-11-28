@@ -87,7 +87,7 @@ public abstract class DatabaseAccessObject
 	 */
 	public static Cursor getTrackPoints(int trackId)
 	{
-		String sql = "SELECT longitude, latitude, altitude FROM Points WHERE trackId = " + trackId;
+		String sql = "SELECT longitude, latitude, altitude, speed, bearing FROM Points WHERE trackId = " + trackId;
 
         return database.rawQuery(sql, null);
 	}
