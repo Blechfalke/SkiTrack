@@ -1,0 +1,191 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://myapp.appspot.com/_ah/api",
+  "name" : "vehicleendpoint",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://myapp.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "ownerDomain" : "technotracks.ch",
+  "ownerName" : "technotracks.ch",
+  "methods" : {
+    "vehicleendpoint.removeVehicle" : {
+      "path" : "vehicle/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.VehicleEndpoint.removeVehicle",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "vehicleendpoint.insertVehicle" : {
+      "path" : "vehicle",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.VehicleEndpoint.insertVehicle",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "vehicleendpoint.updateVehicle" : {
+      "path" : "vehicle",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.VehicleEndpoint.updateVehicle",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "vehicleendpoint.getVehicle" : {
+      "path" : "vehicle/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.VehicleEndpoint.getVehicle",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "vehicleendpoint.listVehicle" : {
+      "path" : "vehicle",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.VehicleEndpoint.listVehicle",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "limit" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "Vehicle" : {
+        "id" : "Vehicle",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CollectionResponse_Vehicle" : {
+        "id" : "CollectionResponse_Vehicle",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Vehicle"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "methods" : {
+      "ch.technotracks.VehicleEndpoint.removeVehicle" : {
+      },
+      "ch.technotracks.VehicleEndpoint.insertVehicle" : {
+        "request" : {
+          "$ref" : "Vehicle"
+        },
+        "response" : {
+          "$ref" : "Vehicle"
+        }
+      },
+      "ch.technotracks.VehicleEndpoint.updateVehicle" : {
+        "request" : {
+          "$ref" : "Vehicle"
+        },
+        "response" : {
+          "$ref" : "Vehicle"
+        }
+      },
+      "ch.technotracks.VehicleEndpoint.getVehicle" : {
+        "response" : {
+          "$ref" : "Vehicle"
+        }
+      },
+      "ch.technotracks.VehicleEndpoint.listVehicle" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Vehicle"
+        }
+      }
+    }
+  }
+}

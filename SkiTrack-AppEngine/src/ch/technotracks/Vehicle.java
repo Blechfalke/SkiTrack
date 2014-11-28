@@ -2,21 +2,41 @@ package ch.technotracks;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 @Embeddable
-public enum Vehicle {
-	SKI("Ski"), 
-	SNOWBOARD("Snowboard"), 
-	LUDGE("Ludge");
-	
+public class Vehicle {
+
+	@Id
+	private long id;
 	private String name;
 	
-	private Vehicle(String name){
+	/* ************************************************************
+	 * 					Constructors
+	 **************************************************************/
+	public Vehicle(){}
+
+	public Vehicle(String name) {
+		super();
 		this.name = name;
 	}
 	
-	public String getName(){
+	/* ************************************************************
+	 * 					Helper methods
+	 **************************************************************/
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getName() {
 		return name;
 	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 }

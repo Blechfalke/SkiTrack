@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/championshipendpoint/v1/20141128102439/java/1.18.0-rc/technotracks.ch-championshipendpoint-v1-20141128102439-java-1.18.0-rc-sources.jar", 
-      "path": "technotracks.ch-championshipendpoint-v1-20141128102439-java-1.18.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/championshipendpoint/v1/20141128103754/java/1.18.0-rc/technotracks.ch-championshipendpoint-v1-20141128103754-java-1.18.0-rc-sources.jar", 
+      "path": "technotracks.ch-championshipendpoint-v1-20141128103754-java-1.18.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2014-11-28 10:24"
+      "timestamp": "2014-11-28 10:37"
     }, 
     {
-      "path": "technotracks.ch-championshipendpoint-v1-20141128102439-java-1.18.0-rc.jar.properties", 
+      "path": "technotracks.ch-championshipendpoint-v1-20141128103754-java-1.18.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -674,5 +674,5 @@
   "version": "v1", 
   "language_version": "1.18.0-rc", 
   "id": "championshipendpoint:v1", 
-  "revision": 20141128102439
+  "revision": 20141128103754
 }

@@ -10,5 +10,6 @@
 	<classpathentry kind="src" path="SkiTrack/endpoint-libs/libgpsdataendpoint-v1/gpsdataendpoint/gpsdataendpoint-v1-generated-source"/>
 	<classpathentry kind="src" path="SkiTrack/endpoint-libs/libtrackendpoint-v1/trackendpoint/trackendpoint-v1-generated-source"/>
 	<classpathentry kind="src" path="SkiTrack/endpoint-libs/libuserendpoint-v1/userendpoint/userendpoint-v1-generated-source"/>
+	<classpathentry kind="src" path="SkiTrack/endpoint-libs/libvehicleendpoint-v1/vehicleendpoint/vehicleendpoint-v1-generated-source"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

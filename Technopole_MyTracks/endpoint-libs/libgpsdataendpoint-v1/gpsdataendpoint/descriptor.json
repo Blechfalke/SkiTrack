@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/gpsdataendpoint/v1/20141128102530/java/1.18.0-rc/technotracks.ch-gpsdataendpoint-v1-20141128102530-java-1.18.0-rc-sources.jar", 
-      "path": "technotracks.ch-gpsdataendpoint-v1-20141128102530-java-1.18.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/gpsdataendpoint/v1/20141128103814/java/1.18.0-rc/technotracks.ch-gpsdataendpoint-v1-20141128103814-java-1.18.0-rc-sources.jar", 
+      "path": "technotracks.ch-gpsdataendpoint-v1-20141128103814-java-1.18.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2014-11-28 10:25"
+      "timestamp": "2014-11-28 10:38"
     }, 
     {
-      "path": "technotracks.ch-gpsdataendpoint-v1-20141128102530-java-1.18.0-rc.jar.properties", 
+      "path": "technotracks.ch-gpsdataendpoint-v1-20141128103814-java-1.18.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -674,5 +674,5 @@
   "version": "v1", 
   "language_version": "1.18.0-rc", 
   "id": "gpsdataendpoint:v1", 
-  "revision": 20141128102530
+  "revision": 20141128103814
 }
