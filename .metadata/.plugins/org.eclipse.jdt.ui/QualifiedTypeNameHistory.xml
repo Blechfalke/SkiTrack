@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="android.R"/>
+<fullyQualifiedTypeName name="ch.hevs.controller.SessionManager"/>
+<fullyQualifiedTypeName name="android.content.Intent"/>
+<fullyQualifiedTypeName name="ch.hevs.interfaceprototype.LoginActivity"/>
+<fullyQualifiedTypeName name="ch.hevs.interfaceprototype.R"/>
+<fullyQualifiedTypeName name="ch.hevs.constant.Constant"/>
+<fullyQualifiedTypeName name="android.widget.Button"/>
+<fullyQualifiedTypeName name="android.widget.TextView"/>
+<fullyQualifiedTypeName name="ch.hevs.interfaceprototype.R.id"/>
+<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="ch.hevs.interfaceprototype.RecordTrackFragment"/>
+<fullyQualifiedTypeName name="android.app.FragmentTransaction"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="android.widget.Toast"/>
+<fullyQualifiedTypeName name="ch.hevs.interfaceprototype.R.string"/>
+</qualifiedTypeNameHistroy>

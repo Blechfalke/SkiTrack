@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Interface Prototype</string>
+    <string name="title_section1">New Track</string>
+    <string name="title_section2">History</string>
+    <string name="title_section3">Settings</string>
+    <string name="title_section4">Logout</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Login</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="lbl_Username">Username (enter test)</string>
+    <string name="lbl_Password">Password (enter test)</string>
+    <string name="btn_Login">Login</string>
+    <string name="drawer_open">Open Menu</string>
+    <string name="drawer_close">Close Menu</string>
+
+    <string-array name="titles_array">
+        <item>New Track</item>
+        <item>History</item>
+        <item>Settings</item>
+        <item>Logout</item>
+    </string-array>
+
+</resources>
