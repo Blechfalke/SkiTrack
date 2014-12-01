@@ -12,7 +12,7 @@ package ch.technotracks.dbaccess;
 
 import java.util.Calendar;
 
-import ch.technotracks.network.UploadingData;
+//import ch.technotracks.network.UploadingData;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -240,6 +240,6 @@ public abstract class DatabaseAccessObject
 	{
 		Cursor cursor = selectAllToUpload();
 		
-		new UploadingData().execute(cursor);
+//		new UploadingData().execute(cursor);
 	}
 }

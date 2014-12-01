@@ -1,460 +1,161 @@
-/*
- * MainActivity
- * 
- * v2
- *
- * 6/08/2013
- * 
- * Copyright Technopole Sierre
- */
-
 package ch.technotracks.ui;
 
-import java.io.File;
-
-import ch.technotracks.constant.NoGPSDialog;
-import ch.technotracks.dbaccess.DatabaseAccessObject;
-import ch.technotracks.file.Csv;
-import ch.technotracks.file.DirectoryTools;
-import ch.technotracks.file.Kml;
-import ch.technotracks.network.DownloadMap;
-import ch.technotracks.network.NetworkTools;
-
-import ch.technotracks.R;
-
-
-import android.location.LocationManager;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
+import android.app.FragmentManager;
 import android.content.Intent;
-import android.database.Cursor;
-import android.support.v4.app.FragmentActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import ch.technotracks.R;
+import ch.technotracks.controller.SessionManager;
 
-/**
- * The main activity class
- * @author Joel
- *
- */
-public class MainActivity extends FragmentActivity
-{
-    private ListView list;
-    private SimpleCursorAdapter listAdapter;
-    private AdapterContextMenuInfo lastMenuInfo;
-    private Button newTrack;
-    private int track;
-    private EditText trackName;
+@SuppressWarnings("deprecation")
+public class MainActivity extends Activity {
 
+	private String[] mDrawerTitles;
+	private DrawerLayout mDrawerLayout;
+	private ListView mDrawerList;
+	private CharSequence mTitle;
+	private ActionBarDrawerToggle mDrawerToggle;
+	private RecordTrackFragment recordTrackFragment;
 
-    /**
-     * Bind menu to list
-     */
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenuInfo menuInfo)
-    {
-        super.onCreateContextMenu(menu, v, menuInfo);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 
-        lastMenuInfo = (AdapterContextMenuInfo)menuInfo;
+		mDrawerTitles = getResources().getStringArray(R.array.titles_array);
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.list_menu, menu);
-    }
+		// Set the adapter for the list view
+		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+				R.layout.drawer_list_item, mDrawerTitles));
+		// Set the list's click listener
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
+		mTitle = getTitle();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.newTrack:
-                createNewTrackDialog();
-                return true;
-            case R.id.downloadMap:
-                downloadMapAlertDialog(this);
-                return true;
-        }
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+				R.drawable.ic_drawer, R.string.drawer_open,
+				R.string.drawer_close) {
 
-        return false;
-    }
+			/** Called when a drawer has settled in a completely closed state. */
+			public void onDrawerClosed(View view) {
+				super.onDrawerClosed(view);
+				getActionBar().setTitle(mTitle);
+			}
 
-    private void createNewTrackDialog()
-    {
-        AlertDialog dialog = new AlertDialog.Builder(this).create();
-        LayoutInflater inflater = getLayoutInflater();
-        View v = inflater.inflate(R.layout.track_name, null);
+			/** Called when a drawer has settled in a completely open state. */
+			public void onDrawerOpened(View drawerView) {
+				super.onDrawerOpened(drawerView);
+				getActionBar().setTitle(R.string.app_name);
+			}
+		};
 
-        DialogInterface.OnClickListener clickListener = new MyOnClickListener();
-        dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(android.R.string.ok), clickListener);
-        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(android.R.string.cancel), clickListener);
-        dialog.setTitle(getString(R.string.newTrack));
+		// Set the drawer toggle as the DrawerListener
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        if(v != null)
-        {
-            trackName = ((EditText)v.findViewById(R.id.trackName));
-            trackName.addTextChangedListener(new MyTextWatcher());
-        }
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 
-        dialog.setView(v);
-        dialog.show();
+		recordTrackFragment = new RecordTrackFragment();
 
-        newTrack = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        if(newTrack != null)
-        {
-            newTrack.setEnabled(false);
-        }
-    }
+		// Set the drawer toggle as the DrawerListener
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
+	}
 
-    /**
-     * On long click allow removing and export
-     */
-    @Override
-    public boolean onContextItemSelected(MenuItem item)
-    {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        if(info == null)
-        {
-            info = lastMenuInfo;
-        }
+	public void btnStartStopClicked(View v) {
+		recordTrackFragment.btnStartStopClicked(v);
+	}
 
-        switch (item.getItemId())
-        {
-            case R.id.export_kml:
-                File f = Kml.export(getTrackId(info.position));
-                Intent i = new Intent(Intent.ACTION_VIEW, Uri.fromFile(f));
-                try
-                {
-                    startActivity(i);
-                }
-                catch(ActivityNotFoundException e)
-                {
-                    showAlertDialog(getText(R.string.googleEarthMissing).toString(), getText(R.string.googleEarthNecessary).toString());
-                }
-                return true;
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
 
-            case R.id.export_csv:
-                Csv.export(getTrackId(info.position));
-                return true;
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
 
-            case R.id.remove_track:
-                removeTrack(getTrackId(info.position));
-                return true;
-        }
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Pass the event to ActionBarDrawerToggle, if it returns
+		// true, then it has handled the app icon touch event
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
+		// Handle your other action bar items...
 
-        return false;
-    }
+		return super.onOptionsItemSelected(item);
+	}
 
-    /**
-     * Remove a track and all associated point
-     * @param trackId
-     * The track id
-     */
-    private void removeTrack(int trackId)
-    {
-        DatabaseAccessObject.deleteTrack(trackId);
+	@SuppressWarnings("rawtypes")
+	private class DrawerItemClickListener implements
+			ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView parent, View view, int position,
+				long id) {
+			selectItem(position);
+		}
+	}
 
-        initializeList();
-    }
+	/** Swaps fragments in the main content view */
+	private void selectItem(int position) {
+		// Launch the requested fragment
+		switch (position) {
+		case 0:
+			break;
+		case 1:
 
-    /**
-     * Find the id of the track
-     * @param position
-     * The position of the track in the list
-     * @return
-     * The id of the track
-     */
-    private int getTrackId(int position)
-    {
-        Cursor c = (Cursor)(listAdapter.getItem(position));
+			break;
+		case 2:
+			break;
+		case 3:
+			SessionManager sm = new SessionManager(this);
+			sm.logoutUser();
+			Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+			startActivity(i);
+			finish();
+			break;
 
-        if (c != null)
-        {
-            return c.getInt(0);
-        }
+		default:
+			break;
+		}
+		if (position == 3) {
 
-        return 0;
-    }
+		}
 
-    /**
-     * Create the activity
-     */
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+		// Bundle args = new Bundle();
+		// args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+		// fragment.setArguments(args);
 
-        DatabaseAccessObject.open(getApplicationContext());
-	
-		/* List initialization */
-        list = (ListView)findViewById(R.id.listView);
-        MyListListener listListener = new MyListListener();
-        list.setOnItemClickListener(listListener);
-	
-		/* Test if network is available for upload data and download map if necessary */
-        if(NetworkTools.isNetworkAvailable(getApplicationContext()))
-        {
-			/* If data need to be uploaded ask the user to upload */
-            if(DatabaseAccessObject.hasDataToUpload())
-            {
-                new UploadDialog().show(getSupportFragmentManager(), "Upload data");
-            }
-			
-			/* If there is no map start the download */
-            if(!DirectoryTools.getSwissMap().exists())
-            {
-                new DownloadMap(this);
-            }
-        }
-        else	//there is no network
-        {
-            if(!DirectoryTools.getSwissMap().exists())	//there is no map we need
-            {
-                missingMap();	//inform the user
-            }
-        }
-    }
+		// Insert the fragment by replacing any existing fragment
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction()
+				.replace(R.id.content_frame, recordTrackFragment).commit();
 
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-        if(!((LocationManager)getSystemService(LOCATION_SERVICE)).isProviderEnabled(LocationManager.GPS_PROVIDER))
-        {
-            NoGPSDialog.showNoGPSDialog(this);
-        }
-    }
+		// Highlight the selected item, update the title, and close the drawer
+		mDrawerList.setItemChecked(position, true);
+		setTitle(mDrawerTitles[position]);
+		mDrawerLayout.closeDrawer(mDrawerList);
+	}
 
-    /**
-     * A custom dialog in case the map is missing
-     */
-    private void missingMap()
-    {
-        showAlertDialog(getText(R.string.missingMap).toString(), getText(R.string.missingMapMessage).toString());
-    }
+	@Override
+	public void setTitle(CharSequence title) {
+		mTitle = title;
+		getActionBar().setTitle(mTitle);
+	}
 
-    /**
-     * Display an alert dialog if there is a problem
-     * @param title
-     * The title
-     * @param message
-     * The message
-     */
-    private void showAlertDialog(String title, String message)
-    {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(title);
-        dialog.setMessage(message);
-        dialog.setCancelable(false);
-        dialog.setPositiveButton(getText(android.R.string.ok), new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                dialog.dismiss();
-                finish();
-            }
-        });
-
-        dialog.show();
-    }
-
-    /**
-     * A method to allow the possibility of download the map again
-     */
-    private void downloadMapAlertDialog(final Activity activity)
-    {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(R.string.downloadMap);
-        dialog.setMessage(R.string.reDownloadMap);
-        dialog.setCancelable(false);
-        dialog.setPositiveButton(getText(android.R.string.ok), new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                if(DirectoryTools.getSwissMap().exists())
-                {
-                    if(DirectoryTools.getSwissMap().delete())
-                    {
-                        new DownloadMap(activity);
-                    }
-                }
-            }
-        });
-        dialog.setNegativeButton(getText(android.R.string.cancel), new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
-
-    /**
-     * Resume the activity
-     */
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        initializeList();//refresh the list
-    }
-
-    /**
-     * Initialize the ListView and allow a refresh
-     */
-    private void initializeList()
-    {
-        String[] from = {"date", "name"};
-        int[] to = {R.id.date, R.id.name};
-
-        Cursor c = DatabaseAccessObject.getTracks();
-
-        listAdapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.row, c, from, to, 0);
-
-        list.setAdapter(listAdapter);
-
-        registerForContextMenu(list);
-    }
-
-    /**
-     * Destroy the activity
-     */
-    @Override
-    protected void onDestroy()
-    {
-        DatabaseAccessObject.close();
-        super.onDestroy();
-    }
-
-    /**
-     * Get the number of track currently in the db and set the number of the next one
-     */
-    private void setTrack()
-    {
-        track = DatabaseAccessObject.getMaxTrackId() + 1;
-    }
-
-    /**
-     * A custom class listening for even on the list
-     * @author Joel
-     *
-     */
-    private class MyListListener implements OnItemClickListener
-    {
-        /**
-         * On short click display details activity
-         */
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,	long id)
-        {
-            Cursor c = (Cursor)(listAdapter.getItem(position));
-            int trackId = 0;
-            if (c != null)
-            {
-                trackId = c.getInt(0);
-            }
-
-            parent.getItemAtPosition(position);
-
-            Intent i = new Intent(getApplicationContext(), Capturing.class);
-            i.putExtra("trackNumber", trackId);
-
-            startActivity(i);
-        }
-    }
-
-    /**
-     * A custom on click listener
-     * @author Joel
-     *
-     */
-    private class MyOnClickListener implements DialogInterface.OnClickListener
-    {
-        @Override
-        public void onClick(DialogInterface dialog, int which)
-        {
-            /* If we create a new track we set its number create it in the db and launch the Capturing activity */
-            if(which == AlertDialog.BUTTON_POSITIVE)
-            {
-                setTrack();
-
-                Intent i = new Intent(getApplicationContext(), Capturing.class);
-                i.putExtra("trackNumber", track);
-
-                Editable e = trackName.getText();
-                if(e != null)
-                {
-                    DatabaseAccessObject.writeTrack(track, e.toString());
-                }
-
-                startActivity(i);
-            }
-
-            dialog.dismiss();
-        }
-    }
-
-
-    /**
-     * A class to activate new track button only when text is entered
-     * @author Joel
-     *
-     */
-    private class MyTextWatcher implements TextWatcher
-    {
-
-        @Override
-        public void afterTextChanged(Editable s)
-        {}	//Useless
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count,
-                                      int after)
-        {}	//Useless
-
-        /**
-         * Called when the text has changed
-         */
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before,
-                                  int count)
-        {
-            if(count > 0)
-                newTrack.setEnabled(true);
-            else
-                newTrack.setEnabled(false);
-        }
-
-    }
 }
