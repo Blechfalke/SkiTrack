@@ -34,6 +34,8 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String GPSDATA_ACCURACY = "accuracy";
 	public static final String GPSDATA_SATELLITES = "satellites";
 	public static final String GPSDATA_TIMESTAMP = "timestamp";
+	public static final String GPSDATA_SPEED = "speed";
+	public static final String GPSDATA_BEARING = "bearing";
 
 	// Title of Columns of chamiponship
 	public static final String CHAMPIONSHIP_ID = "id";
@@ -44,6 +46,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String TRACK_ID = "id";
 	public static final String TRACK_NAME = "name";
 	public static final String TRACK_CREATE = "create_date";
+	public static final String TRACK_SYNC = "synchronized";
 
 	// Title of Columns of user
 	public static final String USER_ID = "id";
@@ -62,6 +65,8 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String CHAMPIONSHIP_USER_IDCHAMPIONSHIP = "id_championship";
 	public static final String CHAMPIONSHIP_USER_IDUSER = "id_user";
 
+
+	// Championship_user
 	public static final String TABLE_CREATE_CHAMPIONSHIP_USER = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_CHAMPIONSHIP_USER
 			+ "("
@@ -69,19 +74,28 @@ public class SQLHelper extends SQLiteOpenHelper {
 			+ " LONG NOT NULL,"
 			+ CHAMPIONSHIP_USER_IDUSER + "LONG NOT NULL )";
 
+	// track_gpsdata
 	public static final String TABLE_CREATE_TRACK_GPSDATA = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_TRACK_GPSDATA
 			+ "("
 			+ TRACK_GPSDATA_IDTRACK
 			+ " LONG NOT NULL," + TRACK_GPSDATA_IDGPS + "LONG NOT NULL )";
 
+	// gps
 	public static final String TABLE_CREATE_GPS = "CREATE TABLE IF NOT EXISTS "
-			+ TABLE_NAME_GPSDATA + "(" + GPSDATA_ID
-			+ " LONG PRIMARY KEY NOT NULL," + GPSDATA_LONGITUDE + " DOUBLE, "
-			+ GPSDATA_LATITUDE + " DOUBLE, " + GPSDATA_ALTITUDE + " DOUBLE, "
-			+ GPSDATA_ACCURACY + " FLOAT, " + GPSDATA_SATELLITES + " INTEGER, "
-			+ GPSDATA_TIMESTAMP + " DATE)";
+			+ TABLE_NAME_GPSDATA + "(" + 
+			GPSDATA_ID 	+ " LONG PRIMARY KEY NOT NULL," + 
+			GPSDATA_LONGITUDE + " DOUBLE, "
+			+ GPSDATA_LATITUDE + " DOUBLE, " + 
+			GPSDATA_ALTITUDE + " DOUBLE, "
+			+ GPSDATA_ACCURACY + " FLOAT, " + 
+			GPSDATA_SATELLITES + " INTEGER, "
+			+ GPSDATA_TIMESTAMP + " DATE, " +
+			GPSDATA_SPEED+ " FLOAT, " +
+			GPSDATA_BEARING + " FLOAT "
+					+ ")";
 
+	// championship
 	public static final String TABLE_CREATE_CHAMPIONSHIP = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_CHAMPIONSHIP
 			+ "("
@@ -91,13 +105,16 @@ public class SQLHelper extends SQLiteOpenHelper {
 			+ " DATE, "
 			+ CHAMPIONSHIP_END + " DATE )";
 
+	// track
 	public static final String TABLE_CREATE_TRACK = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_TRACK
 			+ "("
-			+ TRACK_ID
-			+ " LONG PRIMARY KEY NOT NULL,"
-			+ TRACK_NAME + " TEXT, " + TRACK_CREATE + " DATE )";
+			+ TRACK_ID + " LONG PRIMARY KEY NOT NULL,"
+			+ TRACK_NAME + " TEXT, " 
+			+ TRACK_CREATE + " DATE, "
+			+ TRACK_SYNC + " BOOLEAN )";
 
+	// user
 	public static final String TABLE_CREATE_USER = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_USER
 			+ "("
@@ -123,7 +140,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public SQLHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
-	
+
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(TABLE_CREATE_CHAMPIONSHIP);
@@ -158,24 +175,24 @@ public class SQLHelper extends SQLiteOpenHelper {
 		MatrixCursor Cursor2= new MatrixCursor(columns);
 		alc.add(null);
 		alc.add(null);
-		
-		
+
+
 		try{
 			String maxQuery = Query ;
 			//execute the query results will be save in Cursor c
 			Cursor c = sqlDB.rawQuery(maxQuery, null);
-			
+
 
 			//add value to cursor2
 			Cursor2.addRow(new Object[] { "Success" });
-			
+
 			alc.set(1,Cursor2);
 			if (null != c && c.getCount() > 0) {
 
-				
+
 				alc.set(0,c);
 				c.moveToFirst();
-				
+
 				return alc ;
 			}
 			return alc;
@@ -195,6 +212,6 @@ public class SQLHelper extends SQLiteOpenHelper {
 			return alc;
 		}
 
-		
+
 	}
 }

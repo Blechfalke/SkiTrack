@@ -17,25 +17,34 @@ public class GPSData {
 	private double latitude;
 	private double altitude;
 	private float accuracy;
+	private float speed;
+	private float bearing;
 	private int satellites;
 	private Date timestamp;
-	
+
 	/* ************************************************************
 	 * 					Constructors
 	 **************************************************************/
-	
+
 	public GPSData(){
 		timestamp = new Date();
 	}
 
-	public GPSData(double longitude, double latitude, double altitude, float accuracy, int satellites) {
+	public GPSData(double longitude, double latitude, double altitude, 
+			float accuracy, float speed, float bearing, int satellites,
+			Date timestamp, Track track) {
+		
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.altitude = altitude;
 		this.accuracy = accuracy;
+		this.speed = speed;
+		this.bearing = bearing;
 		this.satellites = satellites;
-		timestamp = new Date();
+		this.timestamp = timestamp;
+		this.track = track;
 	}
+
 	/* ************************************************************
 	 * 					Relations
 	 **************************************************************/
@@ -95,5 +104,21 @@ public class GPSData {
 	public void setTrack(Track track) {
 		this.track = track;
 	}
-	
+
+	public float getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(float speed) {
+		this.speed = speed;
+	}
+
+	public float getBearing() {
+		return bearing;
+	}
+
+	public void setBearing(float bearing) {
+		this.bearing = bearing;
+	}
+
 }

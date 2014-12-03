@@ -149,6 +149,14 @@
             "type" : "number",
             "format" : "float"
           },
+          "speed" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "bearing" : {
+            "type" : "number",
+            "format" : "float"
+          },
           "satellites" : {
             "type" : "integer"
           },

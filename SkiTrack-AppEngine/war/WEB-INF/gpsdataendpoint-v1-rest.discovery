@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/YkLNRSQKrdTH7rILcPO2y-TyEZs\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/9b48G0GFGUyaC2yK3ugksiHj-tI\"",
  "discoveryVersion": "v1",
  "id": "gpsdataendpoint:v1",
  "name": "gpsdataendpoint",
@@ -100,6 +100,10 @@
      "type": "number",
      "format": "double"
     },
+    "bearing": {
+     "type": "number",
+     "format": "float"
+    },
     "id": {
      "type": "string",
      "format": "int64"
@@ -115,6 +119,10 @@
     "satellites": {
      "type": "integer",
      "format": "int32"
+    },
+    "speed": {
+     "type": "number",
+     "format": "float"
     },
     "timestamp": {
      "type": "string",

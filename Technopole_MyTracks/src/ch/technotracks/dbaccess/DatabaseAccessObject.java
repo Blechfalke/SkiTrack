@@ -22,8 +22,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Class to access the android database
- * 
- * @author Joel
  *
  */
 public abstract class DatabaseAccessObject {
@@ -33,7 +31,6 @@ public abstract class DatabaseAccessObject {
 	/**
 	 * Open the database
 	 * 
-	 * @param context
 	 *            The context in which running
 	 */
 	public static void open(Context context) {
@@ -84,6 +81,7 @@ public abstract class DatabaseAccessObject {
 		values.put(SQLHelper.TRACK_ID, trackID);
 		values.put(SQLHelper.TRACK_NAME, trackName);
 		values.put(SQLHelper.TRACK_CREATE, date);
+		values.put(SQLHelper.TRACK_SYNC, false);
 
 		database.insert(SQLHelper.TABLE_NAME_TRACK, null, values);
 	}
