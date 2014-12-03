@@ -121,6 +121,9 @@ public class MainActivity extends Activity {
 
 			break;
 		case 2:
+			Intent dbmanager = new Intent(getApplicationContext(),
+					AndroidDatabaseManager.class);
+			startActivity(dbmanager);
 			break;
 		case 3:
 			SessionManager sm = new SessionManager(this);

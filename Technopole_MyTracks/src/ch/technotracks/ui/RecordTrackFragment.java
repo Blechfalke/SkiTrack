@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ch.technotracks.R;
 import ch.technotracks.constant.Constant;
+import ch.technotracks.dbaccess.DatabaseAccessObject;
+import ch.technotracks.dbaccess.SQLHelper;
 
 public class RecordTrackFragment extends Fragment {
 
@@ -61,7 +63,11 @@ public class RecordTrackFragment extends Fragment {
 	 */
 	private void stopCapture() {
 		capturing = false;
-		manager.removeUpdates(locationListener);
+		try {
+			manager.removeUpdates(locationListener);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -71,6 +77,8 @@ public class RecordTrackFragment extends Fragment {
 		capturing = true;
 		manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 				Constant.MIN_TIME, Constant.MIN_DISTANCE, locationListener);
+		DatabaseAccessObject.open(getActivity());
+		DatabaseAccessObject.writeTrack("TestTrack");
 	}
 
 	public int getSatelliteNumber() {
