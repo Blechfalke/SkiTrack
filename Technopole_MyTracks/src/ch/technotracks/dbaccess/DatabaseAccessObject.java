@@ -1,20 +1,14 @@
-/*
- * DatabaseAccessObject
- * 
- * v2
- *
- * 6/08/2013
- * 
- * Copyright Technopole Sierre
- */
-
 package ch.technotracks.dbaccess;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.List;
+
+import com.google.api.client.util.DateTime;
 
 import ch.technotracks.gpsdataendpoint.model.GPSData;
+import ch.technotracks.trackendpoint.model.Track;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -53,36 +47,34 @@ public abstract class DatabaseAccessObject {
 	 * 
 	 * @return The last id
 	 */
-	public static long getMaxTrackId() {
-		String sql = "SELECT MAX(" + SQLHelper.TRACK_ID + ") FROM "
-				+ SQLHelper.TABLE_NAME_TRACK;
-
-		Cursor cursor = database.rawQuery(sql, null);
-
-		if (!cursor.moveToFirst())
-			return 0;
-
-		return cursor.getInt(0);
-	}
+//	public static long getMaxTrackId() {
+//		String sql = "SELECT MAX(" + SQLHelper.TRACK_ID + ") FROM "
+//				+ SQLHelper.TABLE_NAME_TRACK;
+//
+//		Cursor cursor = database.rawQuery(sql, null);
+//
+//		if (!cursor.moveToFirst())
+//			return 0;
+//
+//		return cursor.getInt(0);
+//	}
 
 	// save track locally
-	public static void writeTrack(String trackName) {
+	public static long writeTrack(Track track) {
 		ContentValues values = new ContentValues();
-		long trackID = getMaxTrackId() + 1;
-
-		Calendar c = Calendar.getInstance();
-		String date = c.get(Calendar.DAY_OF_MONTH) + "/"
-				+ (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-
-		values.put(SQLHelper.TRACK_ID, trackID);
-		values.put(SQLHelper.TRACK_NAME, trackName);
-		values.put(SQLHelper.TRACK_CREATE, date);
+		
+		values.put(SQLHelper.TRACK_CREATE, track.getCreate().toString());
+		values.put(SQLHelper.TRACK_NAME, track.getName());
 		values.put(SQLHelper.TRACK_SYNC, false);
 
-		database.insert(SQLHelper.TABLE_NAME_TRACK, null, values);
+		return database.insert(SQLHelper.TABLE_NAME_TRACK, null, values);
 	}
 	
-	public static void writeGPSData(GPSData point){
+	public static List<Track> readTrack(){
+		return null;
+	}
+	
+	public static long writeGPSData(GPSData point){
 		ContentValues values = new ContentValues();
 
 		values.put(SQLHelper.GPSDATA_ACCURACY, point.getAccuracy());
@@ -92,7 +84,41 @@ public abstract class DatabaseAccessObject {
 		values.put(SQLHelper.GPSDATA_LONGITUDE, point.getLongitude());
 		values.put(SQLHelper.GPSDATA_SATELLITES, point.getSatellites());
 		values.put(SQLHelper.GPSDATA_SPEED, point.getSpeed());
-		values.put(SQLHelper.GPSDATA_TIMESTAMP, new Date(point.getTimestamp().getValue()).toString());
+		values.put(SQLHelper.GPSDATA_TIMESTAMP, new DateTime(point.getTimestamp().getValue()).toString());
+		
+		return database.insert(SQLHelper.TABLE_NAME_GPSDATA, null, values);
+	}
+	
+	public static List<GPSData> readGPSData(){
+		List<GPSData> points = new ArrayList<GPSData>();
+		GPSData point;
+		Cursor cursor;
+		String dateText;
+		
+		String sql = "SELECT * FROM "+SQLHelper.TABLE_NAME_GPSDATA;
+		cursor = database.rawQuery(sql, null);
+		
+		cursor.moveToFirst();
+		
+		while (!cursor.isLast()) {
+			point = new GPSData();
+			point.setAccuracy(cursor.getFloat(cursor.getColumnIndex(SQLHelper.GPSDATA_ACCURACY)));
+			point.setAltitude(cursor.getDouble(cursor.getColumnIndex(SQLHelper.GPSDATA_ALTITUDE)));
+			point.setBearing(cursor.getFloat(cursor.getColumnIndex(SQLHelper.GPSDATA_BEARING)));
+			point.setId(cursor.getLong(cursor.getColumnIndex(SQLHelper.GPSDATA_ID)));
+			point.setLatitude(cursor.getDouble(cursor.getColumnIndex(SQLHelper.GPSDATA_LATITUDE)));
+			point.setLongitude(cursor.getDouble(cursor.getColumnIndex(SQLHelper.GPSDATA_LONGITUDE)));
+			point.setSatellites(cursor.getInt(cursor.getColumnIndex(SQLHelper.GPSDATA_SATELLITES)));
+			
+			dateText = cursor.getString(cursor.getColumnIndex(SQLHelper.GPSDATA_TIMESTAMP));
+			point.setTimestamp(new DateTime(dateText));
+			
+			cursor.moveToNext();
+			
+		}
+		cursor.close();
+		
+		return points;
 	}
 	//
 	// /**
