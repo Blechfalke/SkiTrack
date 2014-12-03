@@ -11,6 +11,8 @@
 package ch.technotracks.dbaccess;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import ch.technotracks.gpsdataendpoint.model.GPSData;
 import android.content.ContentValues;
@@ -81,19 +83,16 @@ public abstract class DatabaseAccessObject {
 	}
 	
 	public static void writeGPSData(GPSData point){
-//		ContentValues values = new ContentValues();
-//		long trackID = getMaxTrackId() + 1;
-//
-//		Calendar c = Calendar.getInstance();
-//		String date = c.get(Calendar.DAY_OF_MONTH) + "/"
-//				+ (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-//
-//		values.put(SQLHelper.TRACK_ID, trackID);
-//		values.put(SQLHelper.TRACK_NAME, trackName);
-//		values.put(SQLHelper.TRACK_CREATE, date);
-//		values.put(SQLHelper.TRACK_SYNC, false);
+		ContentValues values = new ContentValues();
 
-//		database.insert(SQLHelper.TABLE_NAME_TRACK, null, values);
+		values.put(SQLHelper.GPSDATA_ACCURACY, point.getAccuracy());
+		values.put(SQLHelper.GPSDATA_ALTITUDE, point.getAltitude());
+		values.put(SQLHelper.GPSDATA_BEARING, point.getBearing());
+		values.put(SQLHelper.GPSDATA_LATITUDE, point.getLatitude());
+		values.put(SQLHelper.GPSDATA_LONGITUDE, point.getLongitude());
+		values.put(SQLHelper.GPSDATA_SATELLITES, point.getSatellites());
+		values.put(SQLHelper.GPSDATA_SPEED, point.getSpeed());
+		values.put(SQLHelper.GPSDATA_TIMESTAMP, new Date(point.getTimestamp().getValue()).toString());
 	}
 	//
 	// /**
