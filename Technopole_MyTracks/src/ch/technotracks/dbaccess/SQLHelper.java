@@ -21,9 +21,9 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String TABLE_NAME_GPSDATA = "GPSData";
 	public static final String TABLE_NAME_CHAMPIONSHIP = "Championship";
 	public static final String TABLE_NAME_TRACK = "Track";
-	public static final String TABLE_NAME_USER = "USer";
+	public static final String TABLE_NAME_USER = "User";
 
-	public static final String TABLE_NAME_TRACK_GPSDATA = "Track_GPS";
+	public static final String TABLE_NAME_TRACK_USER = "Track_User";
 	public static final String TABLE_NAME_CHAMPIONSHIP_USER = "Championship_User";
 
 	// Title of Columns of GPSData
@@ -57,9 +57,9 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String USER_PHONENUMBER = "phonenumber";
 	public static final String USER_TAKE_PART_CHAMPIONSHIP = "championship";
 
-	// N:M table -> GPS and Track
-	public static final String TRACK_GPSDATA_IDTRACK = "id_track";
-	public static final String TRACK_GPSDATA_IDGPS = "id_gps";
+	// N:M table -> User and Track
+	public static final String TRACK_USER_IDTRACK = "id_track";
+	public static final String TRACK_USER_IDUSER = "id_user";
 
 	// N:M table -> Championship and user
 	public static final String CHAMPIONSHIP_USER_IDCHAMPIONSHIP = "id_championship";
@@ -68,48 +68,48 @@ public class SQLHelper extends SQLiteOpenHelper {
 
 	// Championship_user
 	public static final String TABLE_CREATE_CHAMPIONSHIP_USER = "CREATE TABLE IF NOT EXISTS "
-			+ TABLE_NAME_CHAMPIONSHIP_USER
-			+ "("
-			+ CHAMPIONSHIP_USER_IDCHAMPIONSHIP
-			+ " LONG NOT NULL,"
-			+ CHAMPIONSHIP_USER_IDUSER + "LONG NOT NULL )";
+			+ TABLE_NAME_CHAMPIONSHIP_USER 	+ "("
+			+ CHAMPIONSHIP_USER_IDCHAMPIONSHIP + " LONG NOT NULL,"
+			+ CHAMPIONSHIP_USER_IDUSER 			+ "LONG NOT NULL "
+					+ ")";
 
-	// track_gpsdata
-	public static final String TABLE_CREATE_TRACK_GPSDATA = "CREATE TABLE IF NOT EXISTS "
-			+ TABLE_NAME_TRACK_GPSDATA
-			+ "("
-			+ TRACK_GPSDATA_IDTRACK
-			+ " LONG NOT NULL," + TRACK_GPSDATA_IDGPS + "LONG NOT NULL )";
+	// track_user
+	public static final String TABLE_CREATE_TRACK_USER = "CREATE TABLE IF NOT EXISTS "
+			+ TABLE_NAME_TRACK_USER 	+ "(" 
+			+ TRACK_USER_IDTRACK + " LONG NOT NULL," 
+			+ TRACK_USER_IDUSER + "LONG NOT NULL, "
+			+ " FOREIGN KEY("+TRACK_USER_IDTRACK+") REFERENCES "+TABLE_NAME_TRACK + " ("+TRACK_ID+"), "
+			+ " FOREIGN KEY("+TRACK_USER_IDUSER+") REFERENCES "+TABLE_NAME_USER + " ("+USER_ID+")"	
+			+ ")";
 
 	// gps
 	public static final String TABLE_CREATE_GPS = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_GPSDATA + "(" + 
-			GPSDATA_ID 	+ " LONG PRIMARY KEY NOT NULL," + 
-			GPSDATA_LONGITUDE + " DOUBLE, "
-			+ GPSDATA_LATITUDE + " DOUBLE, " + 
-			GPSDATA_ALTITUDE + " DOUBLE, "
-			+ GPSDATA_ACCURACY + " FLOAT, " + 
-			GPSDATA_SATELLITES + " INTEGER, "
-			+ GPSDATA_TIMESTAMP + " DATE, " +
+			GPSDATA_ID 	+ " LONG PRIMARY KEY IDENTITY(1,1) NOT NULL," + 
+			GPSDATA_LONGITUDE + " DOUBLE, " +
+			GPSDATA_LATITUDE + " DOUBLE, " + 
+			GPSDATA_ALTITUDE + " DOUBLE, " +
+			GPSDATA_ACCURACY + " FLOAT, " + 
+			GPSDATA_SATELLITES + " INTEGER, " +
+			GPSDATA_TIMESTAMP + " DATE, " +
 			GPSDATA_SPEED+ " FLOAT, " +
-			GPSDATA_BEARING + " FLOAT "
+			GPSDATA_BEARING + " FLOAT, " +
+			TRACK_ID + " LONG, " +
+			" FOREIGN KEY("+TRACK_ID+") REFERENCES "+TABLE_NAME_TRACK + " ("+TRACK_ID+")"
 					+ ")";
 
 	// championship
 	public static final String TABLE_CREATE_CHAMPIONSHIP = "CREATE TABLE IF NOT EXISTS "
-			+ TABLE_NAME_CHAMPIONSHIP
-			+ "("
-			+ CHAMPIONSHIP_ID
-			+ " LONG PRIMARY KEY NOT NULL,"
-			+ CHAMPIONSHIP_START
-			+ " DATE, "
+			+ TABLE_NAME_CHAMPIONSHIP + "("
+			+ CHAMPIONSHIP_ID 	+ " LONG PRIMARY KEY IDENTITY(1,1) NOT NULL,"
+			+ CHAMPIONSHIP_START + " DATE, "
 			+ CHAMPIONSHIP_END + " DATE )";
 
 	// track
 	public static final String TABLE_CREATE_TRACK = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_TRACK
 			+ "("
-			+ TRACK_ID + " LONG PRIMARY KEY NOT NULL,"
+			+ TRACK_ID + " LONG PRIMARY KEY IDENTITY(1,1) NOT NULL,"
 			+ TRACK_NAME + " TEXT, " 
 			+ TRACK_CREATE + " DATE, "
 			+ TRACK_SYNC + " BOOLEAN )";
@@ -118,20 +118,13 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String TABLE_CREATE_USER = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_USER
 			+ "("
-			+ USER_ID
-			+ " LONG PRIMARY KEY NOT NULL,"
-			+ USER_FIRSTNAME
-			+ " TEXT, "
-			+ USER_LASTNAME
-			+ " TEXT, "
-			+ USER_PASSWORD
-			+ " TEXT,"
-			+ USER_EMAIL
-			+ " TEXT,"
-			+ USER_PHONENUMBER
-			+ " TEXT,"
-			+ USER_TAKE_PART_CHAMPIONSHIP
-			+ " BOOLEAN" + ")";
+			+ USER_ID + " LONG PRIMARY KEY IDENTITY(1,1) NOT NULL,"
+			+ USER_FIRSTNAME + " TEXT, "
+			+ USER_LASTNAME + " TEXT, "
+			+ USER_PASSWORD + " TEXT,"
+			+ USER_EMAIL 	+ " TEXT,"
+			+ USER_PHONENUMBER + " TEXT,"
+			+ USER_TAKE_PART_CHAMPIONSHIP + " BOOLEAN" + ")";
 
 	public SQLHelper(Context context, CursorFactory factory) {
 		super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -147,7 +140,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 		db.execSQL(TABLE_CREATE_GPS);
 		db.execSQL(TABLE_CREATE_TRACK);
 		db.execSQL(TABLE_CREATE_USER);
-		db.execSQL(TABLE_CREATE_TRACK_GPSDATA);
+		db.execSQL(TABLE_CREATE_TRACK_USER);
 		db.execSQL(TABLE_CREATE_CHAMPIONSHIP_USER);
 	}
 
@@ -159,7 +152,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_TRACK);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_USER);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_CHAMPIONSHIP_USER);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_TRACK_GPSDATA);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_TRACK_USER);
 
 		// create fresh tables
 		onCreate(db);

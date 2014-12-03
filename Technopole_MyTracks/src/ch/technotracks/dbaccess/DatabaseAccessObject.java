@@ -12,6 +12,7 @@ package ch.technotracks.dbaccess;
 
 import java.util.Calendar;
 
+import ch.technotracks.gpsdataendpoint.model.GPSData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -62,14 +63,7 @@ public abstract class DatabaseAccessObject {
 		return cursor.getInt(0);
 	}
 
-	/**
-	 * Create track in the db
-	 * 
-	 * @param trackID
-	 *            The track id
-	 * @param trackName
-	 *            The track name
-	 */
+	// save track locally
 	public static void writeTrack(String trackName) {
 		ContentValues values = new ContentValues();
 		long trackID = getMaxTrackId() + 1;
@@ -84,6 +78,22 @@ public abstract class DatabaseAccessObject {
 		values.put(SQLHelper.TRACK_SYNC, false);
 
 		database.insert(SQLHelper.TABLE_NAME_TRACK, null, values);
+	}
+	
+	public static void writeGPSData(GPSData point){
+//		ContentValues values = new ContentValues();
+//		long trackID = getMaxTrackId() + 1;
+//
+//		Calendar c = Calendar.getInstance();
+//		String date = c.get(Calendar.DAY_OF_MONTH) + "/"
+//				+ (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
+//
+//		values.put(SQLHelper.TRACK_ID, trackID);
+//		values.put(SQLHelper.TRACK_NAME, trackName);
+//		values.put(SQLHelper.TRACK_CREATE, date);
+//		values.put(SQLHelper.TRACK_SYNC, false);
+
+//		database.insert(SQLHelper.TABLE_NAME_TRACK, null, values);
 	}
 	//
 	// /**
