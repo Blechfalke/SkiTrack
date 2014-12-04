@@ -1,8 +1,6 @@
 package ch.technotracks.dbaccess;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import com.google.api.client.util.DateTime;
@@ -28,7 +26,7 @@ public abstract class DatabaseAccessObject {
 	/**
 	 * Open the database
 	 * 
-	 *            The context in which running
+	 * The context in which running
 	 */
 	public static void open(Context context) {
 		helper = new SQLHelper(context, null);
@@ -42,39 +40,22 @@ public abstract class DatabaseAccessObject {
 		helper.close();
 	}
 
-	/**
-	 * Give the last id in the tracks
-	 * 
-	 * @return The last id
-	 */
-//	public static long getMaxTrackId() {
-//		String sql = "SELECT MAX(" + SQLHelper.TRACK_ID + ") FROM "
-//				+ SQLHelper.TABLE_NAME_TRACK;
-//
-//		Cursor cursor = database.rawQuery(sql, null);
-//
-//		if (!cursor.moveToFirst())
-//			return 0;
-//
-//		return cursor.getInt(0);
-//	}
-
 	// save track locally
 	public static long writeTrack(Track track) {
 		ContentValues values = new ContentValues();
-		
+
 		values.put(SQLHelper.TRACK_CREATE, track.getCreate().toString());
 		values.put(SQLHelper.TRACK_NAME, track.getName());
 		values.put(SQLHelper.TRACK_SYNC, false);
 
 		return database.insert(SQLHelper.TABLE_NAME_TRACK, null, values);
 	}
-	
-	public static List<Track> readTrack(){
+
+	public static List<Track> readTrack() {
 		return null;
 	}
-	
-	public static long writeGPSData(GPSData point){
+
+	public static long writeGPSData(GPSData point) {
 		ContentValues values = new ContentValues();
 
 		values.put(SQLHelper.GPSDATA_ACCURACY, point.getAccuracy());
@@ -84,41 +65,51 @@ public abstract class DatabaseAccessObject {
 		values.put(SQLHelper.GPSDATA_LONGITUDE, point.getLongitude());
 		values.put(SQLHelper.GPSDATA_SATELLITES, point.getSatellites());
 		values.put(SQLHelper.GPSDATA_SPEED, point.getSpeed());
-		values.put(SQLHelper.GPSDATA_TIMESTAMP, new DateTime(point.getTimestamp().getValue()).toString());
-		
+		values.put(SQLHelper.GPSDATA_TIMESTAMP, new DateTime(point
+				.getTimestamp().getValue()).toString());
+
 		return database.insert(SQLHelper.TABLE_NAME_GPSDATA, null, values);
 	}
-	
-	public static List<GPSData> readGPSData(){
+
+	public static List<GPSData> readGPSData() {
 		List<GPSData> points = new ArrayList<GPSData>();
 		GPSData point;
 		Cursor cursor;
 		String dateText;
-		
-		String sql = "SELECT * FROM "+SQLHelper.TABLE_NAME_GPSDATA;
+
+		String sql = "SELECT * FROM " + SQLHelper.TABLE_NAME_GPSDATA;
 		cursor = database.rawQuery(sql, null);
-		
+
 		cursor.moveToFirst();
-		
+
 		while (!cursor.isLast()) {
 			point = new GPSData();
-			point.setAccuracy(cursor.getFloat(cursor.getColumnIndex(SQLHelper.GPSDATA_ACCURACY)));
-			point.setAltitude(cursor.getDouble(cursor.getColumnIndex(SQLHelper.GPSDATA_ALTITUDE)));
-			point.setBearing(cursor.getFloat(cursor.getColumnIndex(SQLHelper.GPSDATA_BEARING)));
-			point.setId(cursor.getLong(cursor.getColumnIndex(SQLHelper.GPSDATA_ID)));
-			point.setLatitude(cursor.getDouble(cursor.getColumnIndex(SQLHelper.GPSDATA_LATITUDE)));
-			point.setLongitude(cursor.getDouble(cursor.getColumnIndex(SQLHelper.GPSDATA_LONGITUDE)));
-			point.setSatellites(cursor.getInt(cursor.getColumnIndex(SQLHelper.GPSDATA_SATELLITES)));
-			
-			dateText = cursor.getString(cursor.getColumnIndex(SQLHelper.GPSDATA_TIMESTAMP));
+			point.setAccuracy(cursor.getFloat(cursor
+					.getColumnIndex(SQLHelper.GPSDATA_ACCURACY)));
+			point.setAltitude(cursor.getDouble(cursor
+					.getColumnIndex(SQLHelper.GPSDATA_ALTITUDE)));
+			point.setBearing(cursor.getFloat(cursor
+					.getColumnIndex(SQLHelper.GPSDATA_BEARING)));
+			point.setId(cursor.getLong(cursor
+					.getColumnIndex(SQLHelper.GPSDATA_ID)));
+			point.setLatitude(cursor.getDouble(cursor
+					.getColumnIndex(SQLHelper.GPSDATA_LATITUDE)));
+			point.setLongitude(cursor.getDouble(cursor
+					.getColumnIndex(SQLHelper.GPSDATA_LONGITUDE)));
+			point.setSatellites(cursor.getInt(cursor
+					.getColumnIndex(SQLHelper.GPSDATA_SATELLITES)));
+
+			dateText = cursor.getString(cursor
+					.getColumnIndex(SQLHelper.GPSDATA_TIMESTAMP));
 			point.setTimestamp(new DateTime(dateText));
-			
+
 			cursor.moveToNext();
-			
+
 		}
 		cursor.close();
-		
+
 		return points;
+
 	}
 	//
 	// /**
@@ -216,69 +207,8 @@ public abstract class DatabaseAccessObject {
 	// c.close();
 	// }
 	//
-	// /**
-	// * Write a point in the app database
-	// * @param trackID
-	// * The id of the track
-	// * @param latitude
-	// * The latitude in decimal degree
-	// * @param longitude
-	// * The longitude in decimal degree
-	// * @param altitude
-	// * The altitude in meters
-	// * @param speed
-	// * The speed in meters by second
-	// * @param bearing
-	// * The bearing in degree
-	// * @param accuracy
-	// * The accuracy in meters
-	// * @param time
-	// * The time in millisecond since 1 Jan 1970
-	// * @param satellites
-	// * The number of satellites
-	// */
-	// public static void writePoint(int trackID, double latitude, double
-	// longitude, double altitude, float speed, float bearing, float accuracy,
-	// long time, int satellites)
-	// {
-	// ContentValues values = new ContentValues();
-	//
-	// values.put("trackId", trackID);
-	// values.put("latitude", latitude);
-	// values.put("longitude", longitude);
-	// values.put("altitude", altitude);
-	// values.put("speed", speed);
-	// values.put("bearing", bearing);
-	// values.put("accuracy", accuracy);
-	// values.put("time", time);
-	// values.put("satellites", satellites);
-	// values.put("uploaded", "false");
-	//
-	// database.insert("Points", null, values);
-	// }
-	//
-	// /**
-	// * Create track in the db
-	// * @param trackID
-	// * The track id
-	// * @param trackName
-	// * The track name
-	// */
-	// public static void writeTrack(int trackID, String trackName)
-	// {
-	// ContentValues values = new ContentValues();
-	//
-	// Calendar c = Calendar.getInstance();
-	// String date = c.get(Calendar.DAY_OF_MONTH) + "/" +
-	// (c.get(Calendar.MONTH) + 1) + "/" +
-	// c.get(Calendar.YEAR);
-	//
-	// values.put("id", trackID);
-	// values.put("name", trackName);
-	// values.put("date", date);
-	//
-	// database.insert("Tracks", null, values);
-	// }
+
+
 	//
 	// /**
 	// * Delete a track from the android db

@@ -29,12 +29,19 @@
 		<item value="220" key="DIALOG_Y_ORIGIN"/>
 	</section>
 	<section name="org.eclipse.egit.ui.COMMIT_DIALOG_SECTION">
-		<item value="626" key="DIALOG_WIDTH"/>
+		<item value="1030" key="DIALOG_WIDTH"/>
 		<item value="1|.Helvetica Neue DeskInterface|11.0|0|COCOA|1|.HelveticaNeueDeskInterface-Regular" key="DIALOG_FONT_NAME"/>
 		<item value="817" key="DIALOG_HEIGHT"/>
 		<item value="407" key="DIALOG_X_ORIGIN"/>
 		<item value="0" key="DIALOG_Y_ORIGIN"/>
 	</section>
 	<section name="GitCommitMessageComponent">
+		<list key="/Users/Blechfalke/Documents/Workspaces/Android/SkiTrack/.git">
+			<item value="false"/>
+			<item value="Blechfalke &lt;maurice.meurer@yahoo.com&gt;"/>
+			<item value="Merge branch &apos;master&apos; of https://github.com/Blechfalke/SkiTrack.git&#x0A;&#x0A;Conflicts:&#x0A;&#x09;Technopole_MyTracks/src/ch/technotracks/dbaccess/DatabaseAccessObject.java&#x0A;"/>
+			<item value="Blechfalke &lt;maurice.meurer@yahoo.com&gt;"/>
+			<item value="89c4cb101a0f8e643f3b6104f4d2a553dde8a22b"/>
+		</list>
 	</section>
 </section>

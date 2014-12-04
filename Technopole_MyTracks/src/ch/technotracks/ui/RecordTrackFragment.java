@@ -1,9 +1,8 @@
 package ch.technotracks.ui;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import com.google.api.client.util.DateTime;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -25,12 +24,15 @@ import ch.technotracks.dbaccess.DatabaseAccessObject;
 import ch.technotracks.gpsdataendpoint.model.GPSData;
 import ch.technotracks.trackendpoint.model.Track;
 
+import com.google.api.client.util.DateTime;
+
 public class RecordTrackFragment extends Fragment {
 
 	private LocationManager manager;
 	private LocationListener locationListener;
 	private int satelliteNumber;
 	private boolean capturing;
+	private Track currentTrack;
 	private List<GPSData> points;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,9 +90,10 @@ public class RecordTrackFragment extends Fragment {
 		
 		
 		DatabaseAccessObject.open(getActivity());
-		Track test = new Track();
-		test.setName("testTrack");
-		DatabaseAccessObject.writeTrack(test);
+		currentTrack = new Track();
+		currentTrack.setName("testTrack");
+		currentTrack.setCreate(new DateTime(new Date()));
+		currentTrack.setId(DatabaseAccessObject.writeTrack(currentTrack));
 		
 		points = new ArrayList<GPSData>();
 
