@@ -13,7 +13,16 @@
 <fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="ch.hevs.interfaceprototype.RecordTrackFragment"/>
 <fullyQualifiedTypeName name="android.app.FragmentTransaction"/>
-<fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="android.widget.Toast"/>
 <fullyQualifiedTypeName name="ch.hevs.interfaceprototype.R.string"/>
+<fullyQualifiedTypeName name="ch.technotracks.R"/>
+<fullyQualifiedTypeName name="ch.technotracks.dbaccess.SQLHelper"/>
+<fullyQualifiedTypeName name="android.database.SQLException"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="ch.technotracks.gpsdataendpoint.model.GPSData"/>
+<fullyQualifiedTypeName name="ch.technotracks.dbaccess.DatabaseAccessObject"/>
+<fullyQualifiedTypeName name="ch.technotracks.trackendpoint.model.Track"/>
+<fullyQualifiedTypeName name="com.google.api.client.util.DateTime"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
 </qualifiedTypeNameHistroy>

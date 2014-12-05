@@ -1,5 +1,9 @@
 package ch.technotracks.ui;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import android.app.Fragment;
 import android.content.Context;
 import android.location.GpsSatellite;
@@ -17,7 +21,10 @@ import android.widget.Toast;
 import ch.technotracks.R;
 import ch.technotracks.constant.Constant;
 import ch.technotracks.dbaccess.DatabaseAccessObject;
-import ch.technotracks.dbaccess.SQLHelper;
+import ch.technotracks.gpsdataendpoint.model.GPSData;
+import ch.technotracks.trackendpoint.model.Track;
+
+import com.google.api.client.util.DateTime;
 
 public class RecordTrackFragment extends Fragment {
 
@@ -25,6 +32,8 @@ public class RecordTrackFragment extends Fragment {
 	private LocationListener locationListener;
 	private int satelliteNumber;
 	private boolean capturing;
+	private Track currentTrack;
+	private List<GPSData> points;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -41,6 +50,7 @@ public class RecordTrackFragment extends Fragment {
 		capturing = false;
 		locationListener = new MyLocationListener();
 		GpsStatus.Listener gpsStatusListener = new MyGpsStatusListener();
+		
 		manager = (LocationManager) getActivity().getSystemService(
 				Context.LOCATION_SERVICE);
 		manager.addGpsStatusListener(gpsStatusListener);
@@ -77,8 +87,16 @@ public class RecordTrackFragment extends Fragment {
 		capturing = true;
 		manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 				Constant.MIN_TIME, Constant.MIN_DISTANCE, locationListener);
+		
+		
 		DatabaseAccessObject.open(getActivity());
-//		DatabaseAccessObject.writeTrack("TestTrack");
+		currentTrack = new Track();
+		currentTrack.setName("testTrack");
+		currentTrack.setCreate(new DateTime(new Date()));
+		currentTrack.setId(DatabaseAccessObject.writeTrack(currentTrack));
+		
+		points = new ArrayList<GPSData>();
+
 	}
 
 	public int getSatelliteNumber() {
@@ -95,20 +113,22 @@ public class RecordTrackFragment extends Fragment {
 		 */
 		@Override
 		public void onLocationChanged(Location location) {
-			double latitude = location.getLatitude();
-			double longitude = location.getLongitude();
-			double altitude = location.getAltitude();
-			float speed = location.getSpeed();
-			float bearing = location.getBearing();
-			float accuracy = location.getAccuracy();
-			long time = location.getTime();
+			GPSData point = new GPSData();
 
-			update(latitude, longitude, altitude, speed, bearing, accuracy,
-					time, getSatelliteNumber()); // update the
-			// display
+			point.setLatitude(location.getLatitude());
+			point.setLongitude(location.getLongitude());
+			point.setAltitude(location.getAltitude());
+			point.setSatellites(getSatelliteNumber());
+			point.setAccuracy(location.getAccuracy());
+			point.setTimestamp(new DateTime(location.getTime()));
+			point.setSpeed(location.getSpeed());
+			point.setBearing(location.getBearing());
 
-			// saveInDB(latitude, longitude, altitude, speed, bearing, accuracy,
-			// time); // save in db
+			points.add(point);
+			update(point); // update the display
+			
+			DatabaseAccessObject.writeGPSData(point);
+
 		}
 
 		/**
@@ -119,57 +139,30 @@ public class RecordTrackFragment extends Fragment {
 		 * @param longitude
 		 *            The longitude
 		 */
-		private void update(double latitude, double longitude, double altitude,
-				float speed, float bearing, float accuracy, long time,
-				int satellites) {
+		private void update(GPSData point) {
 			try {
 
 				TextView txtLatitude = (TextView) getFragmentView()
 						.findViewById(R.id.latitude);
-				txtLatitude.setText(Double.toString(latitude));
+				txtLatitude.setText(Double.toString(point.getLatitude()));
 				TextView txtLongitude = (TextView) getFragmentView()
 						.findViewById(R.id.longitude);
-				txtLongitude.setText(Double.toString(longitude));
+				txtLongitude.setText(Double.toString(point.getLongitude()));
 				TextView txtAltitude = (TextView) getFragmentView()
 						.findViewById(R.id.altitude);
-				txtAltitude.setText(Double.toString(altitude));
+				txtAltitude.setText(Double.toString(point.getAltitude()));
 				TextView txtAccuracy = (TextView) getFragmentView()
 						.findViewById(R.id.accuracy);
-				txtAccuracy.setText(Double.toString(accuracy));
+				txtAccuracy.setText(Double.toString(point.getAccuracy()));
 
 				TextView txtSatellites = (TextView) getFragmentView()
 						.findViewById(R.id.satellites);
-				txtSatellites.setText(Integer.toString(satellites));
+				txtSatellites.setText(Integer.toString(point.getSatellites()));
 			} catch (Exception e) {
 				Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG)
 						.show();
 			}
 		}
-
-		/**
-		 * Save data for the point in DB
-		 * 
-		 * @param latitude
-		 *            the latitude
-		 * @param longitude
-		 *            the longitude
-		 * @param altitude
-		 *            the altitude
-		 * @param speed
-		 *            the speed
-		 * @param bearing
-		 *            the bearing
-		 * @param accuracy
-		 *            the accuracy
-		 * @param time
-		 *            the time
-		 */
-		// private void saveInDB(double latitude, double longitude, double
-		// altitude, float speed, float bearing, float accuracy, long time)
-		// {
-		// DatabaseAccessObject.writePoint(track, latitude, longitude, altitude,
-		// speed, bearing, accuracy, time, satelliteNumber);
-		// }
 
 		/**
 		 * Called when gps is disabled in settings

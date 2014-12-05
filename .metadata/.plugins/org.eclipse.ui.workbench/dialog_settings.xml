@@ -33,12 +33,12 @@
 	<section name="ShowViewDialog">
 		<item value="307" key="DIALOG_WIDTH"/>
 		<item value="1|.Helvetica Neue DeskInterface|11.0|0|COCOA|1|.HelveticaNeueDeskInterface-Regular" key="DIALOG_FONT_NAME"/>
-		<item value="org.eclipse.egit.ui.StagingView" key="ShowViewDialog.STORE_SELECTED_VIEW_ID"/>
+		<item value="org.eclipse.rse.ui.view.systemView" key="ShowViewDialog.STORE_SELECTED_VIEW_ID"/>
 		<item value="415" key="DIALOG_HEIGHT"/>
-		<item value="567" key="DIALOG_X_ORIGIN"/>
+		<item value="413" key="DIALOG_X_ORIGIN"/>
 		<item value="132" key="DIALOG_Y_ORIGIN"/>
 		<list key="ShowViewDialog.STORE_EXPANDED_CATEGORIES_ID">
-			<item value="org.eclipse.egit.ui.GitCategory"/>
+			<item value="org.eclipse.rse.ui.view"/>
 		</list>
 	</section>
 </section>

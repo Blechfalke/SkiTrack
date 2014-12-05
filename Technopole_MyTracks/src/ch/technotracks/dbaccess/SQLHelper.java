@@ -27,7 +27,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String TABLE_NAME_CHAMPIONSHIP_USER = "Championship_User";
 
 	// Title of Columns of GPSData
-	public static final String GPSDATA_ID = "id";
+	public static final String GPSDATA_ID = "id_gpsdata";
 	public static final String GPSDATA_LONGITUDE = "longitude";
 	public static final String GPSDATA_LATITUDE = "latitude";
 	public static final String GPSDATA_ALTITUDE = "altitude";
@@ -38,18 +38,18 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String GPSDATA_BEARING = "bearing";
 
 	// Title of Columns of chamiponship
-	public static final String CHAMPIONSHIP_ID = "id";
+	public static final String CHAMPIONSHIP_ID = "id_championship";
 	public static final String CHAMPIONSHIP_START = "start_date";
 	public static final String CHAMPIONSHIP_END = "end_date";
 
 	// Title of Columns of track
-	public static final String TRACK_ID = "id";
+	public static final String TRACK_ID = "id_track";
 	public static final String TRACK_NAME = "name";
 	public static final String TRACK_CREATE = "create_date";
 	public static final String TRACK_SYNC = "synchronized";
 
 	// Title of Columns of user
-	public static final String USER_ID = "id";
+	public static final String USER_ID = "id_user";
 	public static final String USER_FIRSTNAME = "firstname";
 	public static final String USER_LASTNAME = "lastname";
 	public static final String USER_PASSWORD = "password";
@@ -70,14 +70,14 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String TABLE_CREATE_CHAMPIONSHIP_USER = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_CHAMPIONSHIP_USER 	+ "("
 			+ CHAMPIONSHIP_USER_IDCHAMPIONSHIP + " LONG NOT NULL,"
-			+ CHAMPIONSHIP_USER_IDUSER 			+ "LONG NOT NULL "
+			+ CHAMPIONSHIP_USER_IDUSER 			+ " LONG NOT NULL "
 					+ ")";
 
 	// track_user
 	public static final String TABLE_CREATE_TRACK_USER = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_TRACK_USER 	+ "(" 
 			+ TRACK_USER_IDTRACK + " LONG NOT NULL," 
-			+ TRACK_USER_IDUSER + "LONG NOT NULL, "
+			+ TRACK_USER_IDUSER + " LONG NOT NULL, "
 			+ " FOREIGN KEY("+TRACK_USER_IDTRACK+") REFERENCES "+TABLE_NAME_TRACK + " ("+TRACK_ID+"), "
 			+ " FOREIGN KEY("+TRACK_USER_IDUSER+") REFERENCES "+TABLE_NAME_USER + " ("+USER_ID+")"	
 			+ ")";
@@ -85,7 +85,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 	// gps
 	public static final String TABLE_CREATE_GPS = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_GPSDATA + "(" + 
-			GPSDATA_ID 	+ " LONG PRIMARY KEY IDENTITY(1,1) NOT NULL," + 
+			GPSDATA_ID 	+ " INTEGER PRIMARY KEY AUTOINCREMENT," + 
 			GPSDATA_LONGITUDE + " DOUBLE, " +
 			GPSDATA_LATITUDE + " DOUBLE, " + 
 			GPSDATA_ALTITUDE + " DOUBLE, " +
@@ -101,30 +101,29 @@ public class SQLHelper extends SQLiteOpenHelper {
 	// championship
 	public static final String TABLE_CREATE_CHAMPIONSHIP = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_CHAMPIONSHIP + "("
-			+ CHAMPIONSHIP_ID 	+ " LONG PRIMARY KEY IDENTITY(1,1) NOT NULL,"
+			+ CHAMPIONSHIP_ID 	+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
 			+ CHAMPIONSHIP_START + " DATE, "
-			+ CHAMPIONSHIP_END + " DATE )";
+			+ CHAMPIONSHIP_END + " DATE)";
 
 	// track
 	public static final String TABLE_CREATE_TRACK = "CREATE TABLE IF NOT EXISTS "
-			+ TABLE_NAME_TRACK
-			+ "("
-			+ TRACK_ID + " LONG PRIMARY KEY IDENTITY(1,1) NOT NULL,"
+			+ TABLE_NAME_TRACK + "("
+			+ TRACK_ID + " INTEGER PRIMARY KEY,"
 			+ TRACK_NAME + " TEXT, " 
 			+ TRACK_CREATE + " DATE, "
-			+ TRACK_SYNC + " BOOLEAN )";
+			+ TRACK_SYNC + " BOOLEAN)";
 
 	// user
 	public static final String TABLE_CREATE_USER = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME_USER
 			+ "("
-			+ USER_ID + " LONG PRIMARY KEY IDENTITY(1,1) NOT NULL,"
+			+ USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
 			+ USER_FIRSTNAME + " TEXT, "
 			+ USER_LASTNAME + " TEXT, "
 			+ USER_PASSWORD + " TEXT,"
 			+ USER_EMAIL 	+ " TEXT,"
 			+ USER_PHONENUMBER + " TEXT,"
-			+ USER_TAKE_PART_CHAMPIONSHIP + " BOOLEAN" + ")";
+			+ USER_TAKE_PART_CHAMPIONSHIP + " BOOLEAN)";
 
 	public SQLHelper(Context context, CursorFactory factory) {
 		super(context, DATABASE_NAME, factory, DATABASE_VERSION);
