@@ -19,7 +19,7 @@
 package ch.technotracks.gpsdataendpoint.model;
 
 /**
- * Model definition for CollectionResponseGPSData.
+ * Model definition for Vehicle.
  *
  * <p> This is the Java data model class that specifies how to parse/serialize into the JSON that is
  * transmitted over HTTP when working with the gpsdataendpoint. For a detailed explanation see:
@@ -29,58 +29,58 @@ package ch.technotracks.gpsdataendpoint.model;
  * @author Google, Inc.
  */
 @SuppressWarnings("javadoc")
-public final class CollectionResponseGPSData extends com.google.api.client.json.GenericJson {
+public final class Vehicle extends com.google.api.client.json.GenericJson {
+
+  /**
+   * The value may be {@code null}.
+   */
+  @com.google.api.client.util.Key @com.google.api.client.json.JsonString
+  private java.lang.Long id;
 
   /**
    * The value may be {@code null}.
    */
   @com.google.api.client.util.Key
-  private java.util.List<GPSData> items;
-
-  /**
-   * The value may be {@code null}.
-   */
-  @com.google.api.client.util.Key
-  private java.lang.String nextPageToken;
+  private java.lang.String name;
 
   /**
    * @return value or {@code null} for none
    */
-  public java.util.List<GPSData> getItems() {
-    return items;
+  public java.lang.Long getId() {
+    return id;
   }
 
   /**
-   * @param items items or {@code null} for none
+   * @param id id or {@code null} for none
    */
-  public CollectionResponseGPSData setItems(java.util.List<GPSData> items) {
-    this.items = items;
+  public Vehicle setId(java.lang.Long id) {
+    this.id = id;
     return this;
   }
 
   /**
    * @return value or {@code null} for none
    */
-  public java.lang.String getNextPageToken() {
-    return nextPageToken;
+  public java.lang.String getName() {
+    return name;
   }
 
   /**
-   * @param nextPageToken nextPageToken or {@code null} for none
+   * @param name name or {@code null} for none
    */
-  public CollectionResponseGPSData setNextPageToken(java.lang.String nextPageToken) {
-    this.nextPageToken = nextPageToken;
+  public Vehicle setName(java.lang.String name) {
+    this.name = name;
     return this;
   }
 
   @Override
-  public CollectionResponseGPSData set(String fieldName, Object value) {
-    return (CollectionResponseGPSData) super.set(fieldName, value);
+  public Vehicle set(String fieldName, Object value) {
+    return (Vehicle) super.set(fieldName, value);
   }
 
   @Override
-  public CollectionResponseGPSData clone() {
-    return (CollectionResponseGPSData) super.clone();
+  public Vehicle clone() {
+    return (Vehicle) super.clone();
   }
 
 }

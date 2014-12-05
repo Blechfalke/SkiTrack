@@ -78,7 +78,7 @@ public class RecordTrackFragment extends Fragment {
 		manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 				Constant.MIN_TIME, Constant.MIN_DISTANCE, locationListener);
 		DatabaseAccessObject.open(getActivity());
-		DatabaseAccessObject.writeTrack("TestTrack");
+//		DatabaseAccessObject.writeTrack("TestTrack");
 	}
 
 	public int getSatelliteNumber() {

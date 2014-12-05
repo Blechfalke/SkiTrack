@@ -82,7 +82,41 @@ public abstract class DatabaseAccessObject {
 	}
 	
 	public static List<Track> readTrack(){
-		return null;
+		List<Track> tracks = new ArrayList<Track>();
+		Track track;
+		String dateText;
+		Cursor cursor;
+		
+		String sql = "SELECT * FROM "+SQLHelper.TABLE_NAME_TRACK;   //AS _id necessary for the SimpleCursorAdapter ??
+		cursor = database.rawQuery(sql, null);
+		
+		cursor.moveToFirst();
+		
+		while (!cursor.isAfterLast()) {
+			track = new Track();
+//			
+//			track.setCreate(create);
+//			track.setName(cursor.);
+//			track.setId(id);
+			
+//			point.setAccuracy(cursor.getFloat(cursor.getColumnIndex(SQLHelper.GPSDATA_ACCURACY)));
+//			point.setAltitude(cursor.getDouble(cursor.getColumnIndex(SQLHelper.GPSDATA_ALTITUDE)));
+//			point.setBearing(cursor.getFloat(cursor.getColumnIndex(SQLHelper.GPSDATA_BEARING)));
+//			point.setId(cursor.getLong(cursor.getColumnIndex(SQLHelper.GPSDATA_ID)));
+//			point.setLatitude(cursor.getDouble(cursor.getColumnIndex(SQLHelper.GPSDATA_LATITUDE)));
+//			point.setLongitude(cursor.getDouble(cursor.getColumnIndex(SQLHelper.GPSDATA_LONGITUDE)));
+//			point.setSatellites(cursor.getInt(cursor.getColumnIndex(SQLHelper.GPSDATA_SATELLITES)));
+//			
+//			dateText = cursor.getString(cursor.getColumnIndex(SQLHelper.GPSDATA_TIMESTAMP));
+//			point.setTimestamp(new DateTime(dateText));
+//			
+
+			tracks.add(track);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		
+		return tracks;
 	}
 	
 	public static long writeGPSData(GPSData point){
@@ -106,12 +140,12 @@ public abstract class DatabaseAccessObject {
 		Cursor cursor;
 		String dateText;
 		
-		String sql = "SELECT * FROM "+SQLHelper.TABLE_NAME_GPSDATA;
+		String sql = "SELECT * FROM "+SQLHelper.TABLE_NAME_GPSDATA;   //AS _id necessary for the SimpleCursorAdapter ??
 		cursor = database.rawQuery(sql, null);
 		
 		cursor.moveToFirst();
 		
-		while (!cursor.isLast()) {
+		while (!cursor.isAfterLast()) {
 			point = new GPSData();
 			point.setAccuracy(cursor.getFloat(cursor.getColumnIndex(SQLHelper.GPSDATA_ACCURACY)));
 			point.setAltitude(cursor.getDouble(cursor.getColumnIndex(SQLHelper.GPSDATA_ALTITUDE)));
@@ -124,6 +158,7 @@ public abstract class DatabaseAccessObject {
 			dateText = cursor.getString(cursor.getColumnIndex(SQLHelper.GPSDATA_TIMESTAMP));
 			point.setTimestamp(new DateTime(dateText));
 			
+			points.add(point);
 			cursor.moveToNext();
 			
 		}

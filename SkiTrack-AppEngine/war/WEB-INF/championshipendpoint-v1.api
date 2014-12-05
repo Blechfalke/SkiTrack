@@ -1,12 +1,12 @@
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
-  "root" : "https://myapp.appspot.com/_ah/api",
+  "root" : "https://ski-track-group1.appspot.com/_ah/api",
   "name" : "championshipendpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
-    "bns" : "https://myapp.appspot.com/_ah/spi",
+    "bns" : "https://ski-track-group1.appspot.com/_ah/spi",
     "deadline" : 65.0,
     "type" : "lily"
   },
@@ -224,6 +224,75 @@
           "create" : {
             "type" : "string",
             "format" : "date-time"
+          },
+          "sync" : {
+            "type" : "boolean"
+          },
+          "vehicle" : {
+            "$ref" : "Vehicle"
+          },
+          "user" : {
+            "$ref" : "User"
+          },
+          "gps" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "GPSData"
+            }
+          }
+        }
+      },
+      "Vehicle" : {
+        "id" : "Vehicle",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "GPSData" : {
+        "id" : "GPSData",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "longitude" : {
+            "type" : "number"
+          },
+          "latitude" : {
+            "type" : "number"
+          },
+          "altitude" : {
+            "type" : "number"
+          },
+          "accuracy" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "speed" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "bearing" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "satellites" : {
+            "type" : "integer"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "track" : {
+            "$ref" : "Track"
           }
         }
       }
