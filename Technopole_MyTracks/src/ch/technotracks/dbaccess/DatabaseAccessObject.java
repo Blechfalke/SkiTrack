@@ -50,7 +50,6 @@ public abstract class DatabaseAccessObject {
 
 		return database.insert(SQLHelper.TABLE_NAME_TRACK, null, values);
 	}
-<<<<<<< HEAD
 	
 	public static List<Track> readTrack(){
 		List<Track> tracks = new ArrayList<Track>();
@@ -88,11 +87,6 @@ public abstract class DatabaseAccessObject {
 		cursor.close();
 		
 		return tracks;
-=======
-
-	public static List<Track> readTrack() {
-		return null;
->>>>>>> branch 'master' of https://github.com/Blechfalke/SkiTrack.git
 	}
 
 	public static long writeGPSData(GPSData point) {
@@ -110,29 +104,20 @@ public abstract class DatabaseAccessObject {
 
 		return database.insert(SQLHelper.TABLE_NAME_GPSDATA, null, values);
 	}
-
+	
 	public static List<GPSData> readGPSData() {
 		List<GPSData> points = new ArrayList<GPSData>();
 		GPSData point;
 		Cursor cursor;
 		String dateText;
-<<<<<<< HEAD
+
 		
 		String sql = "SELECT * FROM "+SQLHelper.TABLE_NAME_GPSDATA;   //AS _id necessary for the SimpleCursorAdapter ??
-=======
 
-		String sql = "SELECT * FROM " + SQLHelper.TABLE_NAME_GPSDATA;
->>>>>>> branch 'master' of https://github.com/Blechfalke/SkiTrack.git
 		cursor = database.rawQuery(sql, null);
-
 		cursor.moveToFirst();
-<<<<<<< HEAD
 		
 		while (!cursor.isAfterLast()) {
-=======
-
-		while (!cursor.isLast()) {
->>>>>>> branch 'master' of https://github.com/Blechfalke/SkiTrack.git
 			point = new GPSData();
 			point.setAccuracy(cursor.getFloat(cursor
 					.getColumnIndex(SQLHelper.GPSDATA_ACCURACY)));
@@ -152,12 +137,8 @@ public abstract class DatabaseAccessObject {
 			dateText = cursor.getString(cursor
 					.getColumnIndex(SQLHelper.GPSDATA_TIMESTAMP));
 			point.setTimestamp(new DateTime(dateText));
-<<<<<<< HEAD
 			
 			points.add(point);
-=======
-
->>>>>>> branch 'master' of https://github.com/Blechfalke/SkiTrack.git
 			cursor.moveToNext();
 
 		}
