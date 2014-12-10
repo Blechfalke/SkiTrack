@@ -18,12 +18,14 @@ public class Track {
 	private long id;
 	private String name;
 	private Date create;
+	private boolean sync;
 	
 	/* ************************************************************
 	 * 					Constructors
 	 **************************************************************/
 	public Track(){
 		gps = new ArrayList<GPSData>();
+		sync = false;
 	}
 
 	public Track(String name, Date create) {
@@ -31,6 +33,7 @@ public class Track {
 		this.create = create;
 		
 		gps = new ArrayList<GPSData>();
+		sync = false;
 	}
 	/* ************************************************************
 	 * 					Relations
@@ -75,5 +78,37 @@ public class Track {
 	}
 	public void setCreate(Date create) {
 		this.create = create;
+	}
+
+	public boolean isSync() {
+		return sync;
+	}
+
+	public void setSync(boolean sync) {
+		this.sync = sync;
+	}
+
+	public Vehicle getVehicle() {
+		return vehicle;
+	}
+
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<GPSData> getGps() {
+		return gps;
+	}
+
+	public void setGps(List<GPSData> gps) {
+		this.gps = gps;
 	}
 }

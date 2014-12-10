@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/9TjfM8ay_pBa5FiogKfrFP_Pk6E\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/DCBp9pASy1zaq5JRkfaGYLlp3VE\"",
  "discoveryVersion": "v1",
  "id": "vehicleendpoint:v1",
  "name": "vehicleendpoint",
@@ -13,9 +13,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://myapp.appspot.com/_ah/api/vehicleendpoint/v1/",
+ "baseUrl": "https://ski-track-group1.appspot.com/_ah/api/vehicleendpoint/v1/",
  "basePath": "/_ah/api/vehicleendpoint/v1/",
- "rootUrl": "https://myapp.appspot.com/_ah/api/",
+ "rootUrl": "https://ski-track-group1.appspot.com/_ah/api/",
  "servicePath": "vehicleendpoint/v1/",
  "batchPath": "batch",
  "parameters": {

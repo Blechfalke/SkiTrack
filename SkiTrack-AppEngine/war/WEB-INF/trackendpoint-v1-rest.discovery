@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/QMY8sWSt-sfgtix1OumYg7--Lsw\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/jKKWzmr6s_bLSEp9-0zAotptksk\"",
  "discoveryVersion": "v1",
  "id": "trackendpoint:v1",
  "name": "trackendpoint",
@@ -13,9 +13,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://myapp.appspot.com/_ah/api/trackendpoint/v1/",
+ "baseUrl": "https://ski-track-group1.appspot.com/_ah/api/trackendpoint/v1/",
  "basePath": "/_ah/api/trackendpoint/v1/",
- "rootUrl": "https://myapp.appspot.com/_ah/api/",
+ "rootUrl": "https://ski-track-group1.appspot.com/_ah/api/",
  "servicePath": "trackendpoint/v1/",
  "batchPath": "batch",
  "parameters": {
@@ -73,6 +73,30 @@
   }
  },
  "schemas": {
+  "Championship": {
+   "id": "Championship",
+   "type": "object",
+   "properties": {
+    "end": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "start": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "users": {
+     "type": "array",
+     "items": {
+      "$ref": "User"
+     }
+    }
+   }
+  },
   "CollectionResponse_Track": {
    "id": "CollectionResponse_Track",
    "type": "object",
@@ -88,6 +112,51 @@
     }
    }
   },
+  "GPSData": {
+   "id": "GPSData",
+   "type": "object",
+   "properties": {
+    "accuracy": {
+     "type": "number",
+     "format": "float"
+    },
+    "altitude": {
+     "type": "number",
+     "format": "double"
+    },
+    "bearing": {
+     "type": "number",
+     "format": "float"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "latitude": {
+     "type": "number",
+     "format": "double"
+    },
+    "longitude": {
+     "type": "number",
+     "format": "double"
+    },
+    "satellites": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "speed": {
+     "type": "number",
+     "format": "float"
+    },
+    "timestamp": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "track": {
+     "$ref": "Track"
+    }
+   }
+  },
   "Track": {
    "id": "Track",
    "type": "object",
@@ -96,6 +165,77 @@
      "type": "string",
      "format": "date-time"
     },
+    "gps": {
+     "type": "array",
+     "items": {
+      "$ref": "GPSData"
+     }
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "name": {
+     "type": "string"
+    },
+    "sync": {
+     "type": "boolean"
+    },
+    "user": {
+     "$ref": "User"
+    },
+    "vehicle": {
+     "$ref": "Vehicle"
+    }
+   }
+  },
+  "User": {
+   "id": "User",
+   "type": "object",
+   "properties": {
+    "championship": {
+     "type": "boolean"
+    },
+    "championships": {
+     "type": "array",
+     "items": {
+      "$ref": "Championship"
+     }
+    },
+    "eMail": {
+     "type": "string"
+    },
+    "firstname": {
+     "type": "string"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "lastname": {
+     "type": "string"
+    },
+    "password": {
+     "type": "string"
+    },
+    "phoneNumber": {
+     "type": "string"
+    },
+    "takePartChampionship": {
+     "type": "boolean"
+    },
+    "tracks": {
+     "type": "array",
+     "items": {
+      "$ref": "Track"
+     }
+    }
+   }
+  },
+  "Vehicle": {
+   "id": "Vehicle",
+   "type": "object",
+   "properties": {
     "id": {
      "type": "string",
      "format": "int64"

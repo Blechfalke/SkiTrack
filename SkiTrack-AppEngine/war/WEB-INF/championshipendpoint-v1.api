@@ -1,3 +1,335 @@
+<<<<<<< HEAD
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://ski-track-group1.appspot.com/_ah/api",
+  "name" : "championshipendpoint",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://ski-track-group1.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "ownerDomain" : "technotracks.ch",
+  "ownerName" : "technotracks.ch",
+  "methods" : {
+    "championshipendpoint.listChampionship" : {
+      "path" : "championship",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.ChampionshipEndpoint.listChampionship",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "limit" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "championshipendpoint.updateChampionship" : {
+      "path" : "championship",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.ChampionshipEndpoint.updateChampionship",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "championshipendpoint.insertChampionship" : {
+      "path" : "championship",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.ChampionshipEndpoint.insertChampionship",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "championshipendpoint.removeChampionship" : {
+      "path" : "championship/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.ChampionshipEndpoint.removeChampionship",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "championshipendpoint.getChampionship" : {
+      "path" : "championship/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.ChampionshipEndpoint.getChampionship",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "CollectionResponse_Championship" : {
+        "id" : "CollectionResponse_Championship",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Championship"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Championship" : {
+        "id" : "Championship",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "start" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "end" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "users" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "User"
+            }
+          }
+        }
+      },
+      "User" : {
+        "id" : "User",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "firstname" : {
+            "type" : "string"
+          },
+          "lastname" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          },
+          "eMail" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "takePartChampionship" : {
+            "type" : "boolean"
+          },
+          "tracks" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Track"
+            }
+          },
+          "championships" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Championship"
+            }
+          },
+          "championship" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "Track" : {
+        "id" : "Track",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "create" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "sync" : {
+            "type" : "boolean"
+          },
+          "vehicle" : {
+            "$ref" : "Vehicle"
+          },
+          "user" : {
+            "$ref" : "User"
+          },
+          "gps" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "GPSData"
+            }
+          }
+        }
+      },
+      "Vehicle" : {
+        "id" : "Vehicle",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "GPSData" : {
+        "id" : "GPSData",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "longitude" : {
+            "type" : "number"
+          },
+          "latitude" : {
+            "type" : "number"
+          },
+          "altitude" : {
+            "type" : "number"
+          },
+          "accuracy" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "speed" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "bearing" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "satellites" : {
+            "type" : "integer"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "track" : {
+            "$ref" : "Track"
+          }
+        }
+      }
+    },
+    "methods" : {
+      "ch.technotracks.ChampionshipEndpoint.listChampionship" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Championship"
+        }
+      },
+      "ch.technotracks.ChampionshipEndpoint.updateChampionship" : {
+        "request" : {
+          "$ref" : "Championship"
+        },
+        "response" : {
+          "$ref" : "Championship"
+        }
+      },
+      "ch.technotracks.ChampionshipEndpoint.insertChampionship" : {
+        "request" : {
+          "$ref" : "Championship"
+        },
+        "response" : {
+          "$ref" : "Championship"
+        }
+      },
+      "ch.technotracks.ChampionshipEndpoint.removeChampionship" : {
+      },
+      "ch.technotracks.ChampionshipEndpoint.getChampionship" : {
+        "response" : {
+          "$ref" : "Championship"
+        }
+      }
+    }
+  }
+=======
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
@@ -259,4 +591,5 @@
       }
     }
   }
+>>>>>>> branch 'master' of https://github.com/Blechfalke/SkiTrack.git
 }

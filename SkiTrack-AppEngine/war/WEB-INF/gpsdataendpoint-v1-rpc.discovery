@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/9b48G0GFGUyaC2yK3ugksiHj-tI\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/LB_2sAhGGp7P_cf0zqlMRQm5UwE\"",
  "discoveryVersion": "v1",
  "id": "gpsdataendpoint:v1",
  "name": "gpsdataendpoint",
@@ -13,8 +13,8 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rpc",
- "rootUrl": "https://myapp.appspot.com/_ah/api/",
- "rpcUrl": "https://myapp.appspot.com/_ah/api/rpc",
+ "rootUrl": "https://ski-track-group1.appspot.com/_ah/api/",
+ "rpcUrl": "https://ski-track-group1.appspot.com/_ah/api/rpc",
  "rpcPath": "/_ah/api/rpc",
  "parameters": {
   "alt": {
@@ -71,6 +71,30 @@
   }
  },
  "schemas": {
+  "Championship": {
+   "id": "Championship",
+   "type": "object",
+   "properties": {
+    "end": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "start": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "users": {
+     "type": "array",
+     "items": {
+      "$ref": "User"
+     }
+    }
+   }
+  },
   "CollectionResponse_GPSData": {
    "id": "CollectionResponse_GPSData",
    "type": "object",
@@ -139,6 +163,77 @@
      "type": "string",
      "format": "date-time"
     },
+    "gps": {
+     "type": "array",
+     "items": {
+      "$ref": "GPSData"
+     }
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "name": {
+     "type": "string"
+    },
+    "sync": {
+     "type": "boolean"
+    },
+    "user": {
+     "$ref": "User"
+    },
+    "vehicle": {
+     "$ref": "Vehicle"
+    }
+   }
+  },
+  "User": {
+   "id": "User",
+   "type": "object",
+   "properties": {
+    "championship": {
+     "type": "boolean"
+    },
+    "championships": {
+     "type": "array",
+     "items": {
+      "$ref": "Championship"
+     }
+    },
+    "eMail": {
+     "type": "string"
+    },
+    "firstname": {
+     "type": "string"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "lastname": {
+     "type": "string"
+    },
+    "password": {
+     "type": "string"
+    },
+    "phoneNumber": {
+     "type": "string"
+    },
+    "takePartChampionship": {
+     "type": "boolean"
+    },
+    "tracks": {
+     "type": "array",
+     "items": {
+      "$ref": "Track"
+     }
+    }
+   }
+  },
+  "Vehicle": {
+   "id": "Vehicle",
+   "type": "object",
+   "properties": {
     "id": {
      "type": "string",
      "format": "int64"

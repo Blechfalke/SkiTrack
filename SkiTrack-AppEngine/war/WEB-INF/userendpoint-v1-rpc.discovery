@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/_LmCoD_0EyN-kDGUZfflWQWfsQA\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/Obi5h3qc707r6478MPyr2s2417E\"",
  "discoveryVersion": "v1",
  "id": "userendpoint:v1",
  "name": "userendpoint",
@@ -13,8 +13,8 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rpc",
- "rootUrl": "https://myapp.appspot.com/_ah/api/",
- "rpcUrl": "https://myapp.appspot.com/_ah/api/rpc",
+ "rootUrl": "https://ski-track-group1.appspot.com/_ah/api/",
+ "rpcUrl": "https://ski-track-group1.appspot.com/_ah/api/rpc",
  "rpcPath": "/_ah/api/rpc",
  "parameters": {
   "alt": {
@@ -110,6 +110,51 @@
     }
    }
   },
+  "GPSData": {
+   "id": "GPSData",
+   "type": "object",
+   "properties": {
+    "accuracy": {
+     "type": "number",
+     "format": "float"
+    },
+    "altitude": {
+     "type": "number",
+     "format": "double"
+    },
+    "bearing": {
+     "type": "number",
+     "format": "float"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "latitude": {
+     "type": "number",
+     "format": "double"
+    },
+    "longitude": {
+     "type": "number",
+     "format": "double"
+    },
+    "satellites": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "speed": {
+     "type": "number",
+     "format": "float"
+    },
+    "timestamp": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "track": {
+     "$ref": "Track"
+    }
+   }
+  },
   "Track": {
    "id": "Track",
    "type": "object",
@@ -118,12 +163,27 @@
      "type": "string",
      "format": "date-time"
     },
+    "gps": {
+     "type": "array",
+     "items": {
+      "$ref": "GPSData"
+     }
+    },
     "id": {
      "type": "string",
      "format": "int64"
     },
     "name": {
      "type": "string"
+    },
+    "sync": {
+     "type": "boolean"
+    },
+    "user": {
+     "$ref": "User"
+    },
+    "vehicle": {
+     "$ref": "Vehicle"
     }
    }
   },
@@ -167,6 +227,19 @@
      "items": {
       "$ref": "Track"
      }
+    }
+   }
+  },
+  "Vehicle": {
+   "id": "Vehicle",
+   "type": "object",
+   "properties": {
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "name": {
+     "type": "string"
     }
    }
   }

@@ -1,3 +1,335 @@
+<<<<<<< HEAD
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://ski-track-group1.appspot.com/_ah/api",
+  "name" : "gpsdataendpoint",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://ski-track-group1.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "ownerDomain" : "technotracks.ch",
+  "ownerName" : "technotracks.ch",
+  "methods" : {
+    "gpsdataendpoint.insertGPSData" : {
+      "path" : "gpsdata",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.GPSDataEndpoint.insertGPSData",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "gpsdataendpoint.getGPSData" : {
+      "path" : "gpsdata/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.GPSDataEndpoint.getGPSData",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "gpsdataendpoint.removeGPSData" : {
+      "path" : "gpsdata/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.GPSDataEndpoint.removeGPSData",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "gpsdataendpoint.updateGPSData" : {
+      "path" : "gpsdata",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.GPSDataEndpoint.updateGPSData",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "gpsdataendpoint.listGPSData" : {
+      "path" : "gpsdata",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ch.technotracks.GPSDataEndpoint.listGPSData",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "limit" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "GPSData" : {
+        "id" : "GPSData",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "longitude" : {
+            "type" : "number"
+          },
+          "latitude" : {
+            "type" : "number"
+          },
+          "altitude" : {
+            "type" : "number"
+          },
+          "accuracy" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "speed" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "bearing" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "satellites" : {
+            "type" : "integer"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "track" : {
+            "$ref" : "Track"
+          }
+        }
+      },
+      "Track" : {
+        "id" : "Track",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "create" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "sync" : {
+            "type" : "boolean"
+          },
+          "vehicle" : {
+            "$ref" : "Vehicle"
+          },
+          "user" : {
+            "$ref" : "User"
+          },
+          "gps" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "GPSData"
+            }
+          }
+        }
+      },
+      "Vehicle" : {
+        "id" : "Vehicle",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "User" : {
+        "id" : "User",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "firstname" : {
+            "type" : "string"
+          },
+          "lastname" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          },
+          "eMail" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "takePartChampionship" : {
+            "type" : "boolean"
+          },
+          "tracks" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Track"
+            }
+          },
+          "championships" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Championship"
+            }
+          },
+          "championship" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "Championship" : {
+        "id" : "Championship",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "start" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "end" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "users" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "User"
+            }
+          }
+        }
+      },
+      "CollectionResponse_GPSData" : {
+        "id" : "CollectionResponse_GPSData",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "GPSData"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "methods" : {
+      "ch.technotracks.GPSDataEndpoint.insertGPSData" : {
+        "request" : {
+          "$ref" : "GPSData"
+        },
+        "response" : {
+          "$ref" : "GPSData"
+        }
+      },
+      "ch.technotracks.GPSDataEndpoint.getGPSData" : {
+        "response" : {
+          "$ref" : "GPSData"
+        }
+      },
+      "ch.technotracks.GPSDataEndpoint.removeGPSData" : {
+      },
+      "ch.technotracks.GPSDataEndpoint.updateGPSData" : {
+        "request" : {
+          "$ref" : "GPSData"
+        },
+        "response" : {
+          "$ref" : "GPSData"
+        }
+      },
+      "ch.technotracks.GPSDataEndpoint.listGPSData" : {
+        "response" : {
+          "$ref" : "CollectionResponse_GPSData"
+        }
+      }
+    }
+  }
+=======
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
@@ -233,4 +565,5 @@
       }
     }
   }
+>>>>>>> branch 'master' of https://github.com/Blechfalke/SkiTrack.git
 }
