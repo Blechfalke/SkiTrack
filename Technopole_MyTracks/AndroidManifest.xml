@@ -18,11 +18,10 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".ui.MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity android:name=".ui.AndroidDatabaseManager" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
             android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login" >
@@ -31,6 +30,23 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.BaseActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".ui.RecordTrackFragment"
+            android:label="@string/title_recordTrack" >
+        </activity>
+        <activity
+            android:name=".ui.AndroidDatabaseManager"
+            android:parentActivityName=".ui.BaseActivity" >
+
+            <!-- The meta-data element is needed for versions lower than 4.1 -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.BaseActivity" />
         </activity>
     </application>
 

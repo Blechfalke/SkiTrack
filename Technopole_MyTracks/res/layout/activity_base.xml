@@ -8,15 +8,26 @@
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+        <!-- Add content here -->
+
+        <TextView
+            android:id="@+id/lblBase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BaseActivity"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </FrameLayout>
+
     <!-- The navigation drawer -->
 
     <ListView
         android:id="@+id/left_drawer"
-        android:layout_width="240dp"
+        android:layout_width="260dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#111"
+        android:background="#1a1c25"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp" />

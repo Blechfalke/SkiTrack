@@ -4,17 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.app.Fragment;
-import android.content.Context;
-import android.location.GpsSatellite;
-import android.location.GpsStatus;
+import android.content.IntentSender;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,78 +17,117 @@ import ch.technotracks.dbaccess.DatabaseAccessObject;
 import ch.technotracks.gpsdataendpoint.model.GPSData;
 import ch.technotracks.trackendpoint.model.Track;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.api.client.util.DateTime;
 
-public class RecordTrackFragment extends Fragment {
+public class RecordTrackFragment extends BaseActivity implements
+		GooglePlayServicesClient.ConnectionCallbacks,
+		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 
-	private LocationManager manager;
-	private LocationListener locationListener;
 	private int satelliteNumber;
-	private boolean capturing;
 	private Track currentTrack;
 	private List<GPSData> points;
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
+	private LocationClient mLocationClient;
+	private Location mCurrentLocation;
+	private LocationRequest mLocationRequest;
+	private boolean mUpdatesRequested;
 
-		return inflater
-				.inflate(R.layout.fragment_recordtrack, container, false);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			mUpdatesRequested = savedInstanceState.getBoolean("Recording");
+		} else {
+			mUpdatesRequested = false;
+			savedInstanceState = new Bundle();
+			savedInstanceState.putBoolean("Recording", mUpdatesRequested);
+		}
+
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_recordtrack);
+
+		mLocationRequest = LocationRequest.create();
+		// Use high accuracy
+		mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+		// Set the update interval to 5 seconds
+		mLocationRequest.setInterval(Constant.UPDATE_INTERVAL);
+		// Set the fastest update interval to 1 second
+		mLocationRequest.setFastestInterval(Constant.FASTEST_INTERVAL);
+		/*
+		 * Create a new location client, using the enclosing class to handle
+		 * callbacks.
+		 */
+		mLocationClient = new LocationClient(this, this, this);
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putBoolean("Recording", mUpdatesRequested);
+		super.onSaveInstanceState(outState);
+	}
 
-		capturing = false;
-		locationListener = new MyLocationListener();
-		GpsStatus.Listener gpsStatusListener = new MyGpsStatusListener();
+	@Override
+	protected void onStart() {
+		if (mUpdatesRequested)
+			startCapture();
 		
-		manager = (LocationManager) getActivity().getSystemService(
-				Context.LOCATION_SERVICE);
-		manager.addGpsStatusListener(gpsStatusListener);
+		setButtonLabel();
+		super.onStart();
 	}
 
 	public void btnStartStopClicked(View view) {
-
-		Button btnStart = (Button) view;
-		if (capturing) {
+		if (mUpdatesRequested) {
 			stopCapture();
-			btnStart.setText(getString(R.string.start));
 		} else {
 			startCapture();
-			btnStart.setText(getString(R.string.stop));
 		}
+		setButtonLabel();
+	}
+
+	private void setButtonLabel() {
+		Button btnStart = (Button) findViewById(R.id.btnStartStopRecording);
+		btnStart.setText(mUpdatesRequested ? getString(R.string.stop)
+				: getString(R.string.start));
 	}
 
 	/**
 	 * Stop capturing and upload data if possible
 	 */
 	private void stopCapture() {
-		capturing = false;
-		try {
-			manager.removeUpdates(locationListener);
-		} catch (Exception e) {
-			e.printStackTrace();
+		mUpdatesRequested = false;
+
+		// If the client is connected
+		if (mLocationClient.isConnected()) {
+			/*
+			 * Remove location updates for a listener. The current Activity is
+			 * the listener, so the argument is "this".
+			 */
+			mLocationClient.removeLocationUpdates(this);
 		}
+
+		/*
+		 * After disconnect() is called, the client is considered "dead".
+		 */
+		mLocationClient.disconnect();
+
 	}
 
 	/**
 	 * Start capturing data
 	 */
 	private void startCapture() {
-		capturing = true;
-		manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				Constant.MIN_TIME, Constant.MIN_DISTANCE, locationListener);
-		
-		
-		DatabaseAccessObject.open(getActivity());
-		currentTrack = new Track();
-		currentTrack.setName("testTrack");
-		currentTrack.setCreate(new DateTime(new Date()));
-		currentTrack.setId(DatabaseAccessObject.writeTrack(currentTrack));
-		
-		points = new ArrayList<GPSData>();
+		mUpdatesRequested = true;
+
+		// Connect the client.
+		mLocationClient.connect();
+
+		if (mLocationClient.isConnected()) {
+
+		}
 
 	}
 
@@ -103,121 +135,113 @@ public class RecordTrackFragment extends Fragment {
 		return satelliteNumber;
 	}
 
-	public View getFragmentView() {
-		return getView();
+	/*
+	 * Called when the Activity is no longer visible at all. Stop updates and
+	 * disconnect.
+	 */
+	@Override
+	protected void onStop() {
+		stopCapture();
+
+		super.onStop();
 	}
 
-	private class MyLocationListener implements LocationListener {
-		/**
-		 * Called when the current location change
-		 */
-		@Override
-		public void onLocationChanged(Location location) {
-			GPSData point = new GPSData();
+	@Override
+	public void onLocationChanged(Location location) {
+		// Report to the UI that the location was updated
+		GPSData point = new GPSData();
 
-			point.setLatitude(location.getLatitude());
-			point.setLongitude(location.getLongitude());
-			point.setAltitude(location.getAltitude());
-			point.setSatellites(getSatelliteNumber());
-			point.setAccuracy(location.getAccuracy());
-			point.setTimestamp(new DateTime(location.getTime()));
-			point.setSpeed(location.getSpeed());
-			point.setBearing(location.getBearing());
+		point.setLatitude(location.getLatitude());
+		point.setLongitude(location.getLongitude());
+		point.setAltitude(location.getAltitude());
+		point.setSatellites(getSatelliteNumber());
+		point.setAccuracy(location.getAccuracy());
+		point.setTimestamp(new DateTime(location.getTime()));
+		point.setSpeed(location.getSpeed());
+		point.setBearing(location.getBearing());
 
-			points.add(point);
-			update(point); // update the display
-			
-			DatabaseAccessObject.writeGPSData(point);
+		points.add(point);
+		update(point); // update the display
+		DatabaseAccessObject.writeGPSData(point);
+	}
 
+	private void update(GPSData point) {
+		try {
+
+			TextView txtLatitude = (TextView) findViewById(R.id.latitude);
+			txtLatitude.setText(Double.toString(point.getLatitude()));
+			TextView txtLongitude = (TextView) findViewById(R.id.longitude);
+			txtLongitude.setText(Double.toString(point.getLongitude()));
+			TextView txtAltitude = (TextView) findViewById(R.id.altitude);
+			txtAltitude.setText(Double.toString(point.getAltitude()));
+			TextView txtAccuracy = (TextView) findViewById(R.id.accuracy);
+			txtAccuracy.setText(Double.toString(point.getAccuracy()));
+
+			TextView txtSatellites = (TextView) findViewById(R.id.satellites);
+			txtSatellites.setText(Integer.toString(0));
+		} catch (Exception e) {
+			Toast.makeText(getApplicationContext(), e.getMessage(),
+					Toast.LENGTH_LONG).show();
 		}
+	}
 
-		/**
-		 * Update display
-		 * 
-		 * @param latitude
-		 *            The latitude
-		 * @param longitude
-		 *            The longitude
+	/*
+	 * Called by Location Services if the attempt to Location Services fails.
+	 */
+	@Override
+	public void onConnectionFailed(ConnectionResult connectionResult) {
+		/*
+		 * Google Play services can resolve some errors it detects. If the error
+		 * has a resolution, try sending an Intent to start a Google Play
+		 * services activity that can resolve error.
 		 */
-		private void update(GPSData point) {
+		if (connectionResult.hasResolution()) {
 			try {
-
-				TextView txtLatitude = (TextView) getFragmentView()
-						.findViewById(R.id.latitude);
-				txtLatitude.setText(Double.toString(point.getLatitude()));
-				TextView txtLongitude = (TextView) getFragmentView()
-						.findViewById(R.id.longitude);
-				txtLongitude.setText(Double.toString(point.getLongitude()));
-				TextView txtAltitude = (TextView) getFragmentView()
-						.findViewById(R.id.altitude);
-				txtAltitude.setText(Double.toString(point.getAltitude()));
-				TextView txtAccuracy = (TextView) getFragmentView()
-						.findViewById(R.id.accuracy);
-				txtAccuracy.setText(Double.toString(point.getAccuracy()));
-
-				TextView txtSatellites = (TextView) getFragmentView()
-						.findViewById(R.id.satellites);
-				txtSatellites.setText(Integer.toString(point.getSatellites()));
-			} catch (Exception e) {
-				Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG)
-						.show();
+				// Start an Activity that tries to resolve the error
+				connectionResult.startResolutionForResult(this,
+						MainActivity.CONNECTION_FAILURE_RESOLUTION_REQUEST);
+				/*
+				 * Thrown if Google Play services canceled the original
+				 * PendingIntent
+				 */
+			} catch (IntentSender.SendIntentException e) {
+				// Log the error
+				e.printStackTrace();
 			}
+		} else {
+			/*
+			 * If no resolution is available, display a dialog to the user with
+			 * the error.
+			 */
+			// showErrorDialog(connectionResult.getErrorCode());
+			System.out.println(connectionResult.getErrorCode());
 		}
-
-		/**
-		 * Called when gps is disabled in settings
-		 */
-		@Override
-		public void onProviderDisabled(String provider) {
-			stopCapture(); // when GPS is disabled in settings stop capturing
-		}
-
-		@Override
-		public void onProviderEnabled(String provider) {
-		} // Useless
-
-		@Override
-		public void onStatusChanged(String provider, int status, Bundle extras) {
-		} // Useless
 	}
 
-	private class MyGpsStatusListener implements GpsStatus.Listener {
-		/**
-		 * Called when the gps status change (typically when the number of
-		 * satellites change)
-		 */
-		@Override
-		public void onGpsStatusChanged(int event) {
-			if (event == GpsStatus.GPS_EVENT_SATELLITE_STATUS) {
-				int currentSatelliteNumber = getSatelliteNumber();
+	@Override
+	public void onConnected(Bundle dataBundle) {
+		// Display the connection status
 
-				/*
-				 * if we can update display we do it update only if satellite
-				 * number change
-				 */
-				if (currentSatelliteNumber != satelliteNumber) {
-					satelliteNumber = currentSatelliteNumber;
-				}
-			}
+		Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+
+		if (mUpdatesRequested) {
+			DatabaseAccessObject.open(this);
+			currentTrack = new Track();
+			currentTrack.setName("testTrack");
+			currentTrack.setCreate(new DateTime(new Date()));
+			currentTrack.setId(DatabaseAccessObject.writeTrack(currentTrack));
+
+			points = new ArrayList<GPSData>();
+			mLocationClient.requestLocationUpdates(mLocationRequest, this);
 		}
 
-		/**
-		 * Give the number of satellite currently locked
-		 * 
-		 * @return The number of satellites
-		 */
-		@SuppressWarnings("unused")
-		private int getSatelliteNumber() {
-			int satNumber = 0;
+	}
 
-			/* Count the number of satellites */
-			GpsStatus gpsStatus = manager.getGpsStatus(null);
-			for (GpsSatellite ignored : gpsStatus.getSatellites()) {
-				satNumber++;
-			}
-
-			return satNumber;
-		}
+	@Override
+	public void onDisconnected() {
+		// Display the connection status
+		Toast.makeText(this, "Disconnected. Please re-connect.",
+				Toast.LENGTH_SHORT).show();
 	}
 
 }
